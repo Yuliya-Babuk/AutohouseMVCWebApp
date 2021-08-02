@@ -1,0 +1,56 @@
+﻿@using  MVCAppAutohouse.DAL.Entities;
+@model string
+
+@{
+    ViewData["Title"] = "Add new car";
+    Layout = "_Layout";
+}
+
+
+<form action="/Catalog/AddCar" method="post">
+
+    <div class="mb-3 row">
+        <label for="ID" class="col-sm-2 col-form-label">ID</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="ID" value="" />
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="Name" class="col-sm-2 col-form-label">Brand</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="Brand" value="" />
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="Model" class="col-sm-2 col-form-label">Model</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="Model" value="">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="TypeEngine" class="col-sm-2 col-form-label">Engine Type</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="TypeEngine" value="">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="TypeEngine" class="col-sm-2 col-form-label">Engine Size</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="EngineSize" value="">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="TypeEngine" class="col-sm-2 col-form-label">Year</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="Year" value="">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="TypeEngine" class="col-sm-2 col-form-label">Price</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="Price" value="">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mb-3">Add</button>
+</form>
+
