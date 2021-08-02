@@ -13,8 +13,9 @@ namespace AppAutohouse.PL
         private readonly IService<Car> _carService;
         private readonly IMapper _mapper;
 
-        public BrandController(IService<Brand> brandService, IService<Car> _carService, IMapper mapper)
+        public BrandController(IService<Brand> brandService, IService<Car> carService, IMapper mapper)
         {
+            _carService = carService;
             _brandService = brandService;
             _mapper = mapper;
         }
@@ -46,7 +47,7 @@ namespace AppAutohouse.PL
 
         public IActionResult GetInfoById(int Id)
         {
-            var cars = _carService.GetAll().Select(c=>c.BrandId==Id);
+            var cars = _carService.GetAll().Where(c => c.BrandId == Id);
             return View(cars);
         }
 
