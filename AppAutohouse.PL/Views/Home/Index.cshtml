@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_LayoutHome";
+}
+
+<div class="accordion ">
+
+    <h1 class="display-5 text-center">Autohouse</h1>
+    <h1 class="display-4 text-center">"Drive your Dream"</h1>
+    <ul class="navbar-nav flex-grow-1 justify-content-center">
+        <li class="nav-item" text-center>
+            <h1><a class="nav-link text-dark text-center" asp-controller="Catalog" asp-action="Cars">Cars</a></h1>
+        </li>
+        <li>
+            <h1><a class="nav-link text-dark text-center" asp-controller="Brand" asp-action="Brands">Brands</a></h1>
+        </li>
+
+    </ul>
+</div>
+
+

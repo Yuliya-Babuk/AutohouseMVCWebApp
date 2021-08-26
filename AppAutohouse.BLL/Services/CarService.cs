@@ -1,16 +1,15 @@
 ﻿using MVCAppAutohouse.DAL.Entities;
 using MVCAppAutohouse.DAL.Interfaces;
-using MVCAppAutohouse.DAL.Repositories;
 using System.Collections.Generic;
 
 
 namespace AppAutohouse.BLL
 {
-    public class CarService : IService<Car>
+    public class CarService : ICarService
 
     {
         private readonly IRepository<Car> _carRepository;
-        
+
 
         public CarService(IRepository<Car> carRepository)
         {
@@ -30,12 +29,17 @@ namespace AppAutohouse.BLL
         {
             return _carRepository.GetAll();
         }
+        public Car GetById(int id)
+        {
+            return _carRepository.GetById(id);
+        }
 
         public void Update(Car item)
         {
             _carRepository.Update(item);
         }
     }
+
 }
 
 

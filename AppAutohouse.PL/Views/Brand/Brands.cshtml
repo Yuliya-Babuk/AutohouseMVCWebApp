@@ -4,10 +4,10 @@
 
 @{
     ViewData["Title"] = "Brands";
-    Layout = "_Layout";
+
 }
 <div class="mb-3">
-    <a class="btn btn-primary" href="/brand/AddBrand" role="button">Add new brand</a>
+    <a class="btn btn-primary" href="/brand/UpdateOrCreate" role="button">Add new brand</a>
 
 </div>
 
@@ -27,11 +27,8 @@
 
         @foreach (var item in @Model)
         {
-            <tr>
-                <td>
-                    @item.Logo
-
-            </td>
+        <tr>
+            <td> <img src="@item.Logo" width="100" /> </td>
             <td>@item.Name</td>
             <td>@item.Description</td>
 
@@ -52,7 +49,7 @@
                         </form>
                     </li>
                     <li class="nav-item px-2">
-                        <form action="/Brand/Update" method="get">
+                        <form action="/Brand/UpdateOrCreate" method="get">
                             <input type="hidden" name="Id" value="@item.Id" />
                             <button type="submit" class="btn btn-primary mb-3">Update</button>
                         </form>
@@ -61,7 +58,7 @@
             </td>
         </tr>
 
-    }
+        }
 </table>
 
 

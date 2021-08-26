@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace AppAutohouse.BLL
 {
-    public class BrandService : IService<Brand>
+    public class BrandService : IBrandService
 
     {
         private readonly IRepository<Brand> _brandRepository;
@@ -28,6 +28,10 @@ namespace AppAutohouse.BLL
         public IEnumerable<Brand> GetAll()
         {
             return _brandRepository.GetAll();
+        }
+        public Brand GetById(int id)
+        {
+            return _brandRepository.GetById(id);
         }
 
         public void Update(Brand item)

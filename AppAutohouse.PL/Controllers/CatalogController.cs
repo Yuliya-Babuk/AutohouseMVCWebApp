@@ -1,21 +1,26 @@
 ﻿using AppAutohouse.BLL;
+using AppAutohouse.PL.Mappers;
 using AppAutohouse.PL.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVCAppAutohouse.DAL.Entities;
-using MVCAppAutohouse.DAL.Repositories;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AppAutohouse.PL
 {
+    
     public class CatalogController : Controller
 
     {
-        private readonly IService<Car> _carService;
+        private readonly IBrandService _brandService;
+        private readonly ICarService _carService;
         private readonly IMapper _mapper;
 
-        public CatalogController(IService<Car> carService, IMapper mapper)
+        public CatalogController(IBrandService brandService, ICarService carService, IMapper mapper)
         {
+            _brandService = brandService;
             _carService = carService;
             _mapper = mapper;
         }
@@ -23,44 +28,54 @@ namespace AppAutohouse.PL
         [Route("[controller]")]
         public IActionResult Cars()
         {
-            return View(_carService.GetAll()); //передаем браузеру
+            return View(_mapper.Map<IEnumerable<CarModel>>(_carService.GetAll()));
+            //передаем браузеру
         }
-
-        public IActionResult AddCar()
-        {
-            return View();
-        }
-
+                
+        [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult AddCar(Car newCar) //получаем от браузера
+        public IActionResult DeleteCar(int id)
         {
-            var carModel = _mapper.Map<CarModel>(newCar);
-            _carService.AddNew(newCar);
+            _carService.Delete(id);
             return RedirectToAction("Cars");
         }
 
-        [HttpPost]
-        public IActionResult DeleteCar(int Id)
+        public IActionResult GetInfoById(int id)
         {
-            _carService.Delete(Id);
-            return RedirectToAction("Cars");
-        }
-
-        public IActionResult GetInfoById(int Id)
-        {
-            var car = _carService.GetAll().FirstOrDefault(c => c.Id == Id);
+            var car = _carService.GetById(id);
+           
             return View(car);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult Update(Car car)
+        public IActionResult UpdateOrCreate(Car car)
         {
-            _carService.Update(car);
-            return RedirectToAction("Cars");
+            if (ModelState.IsValid)
+            {
+                var res = _carService.GetAll().FirstOrDefault(c => c.Id == car.Id);
+                if (res is not null)
+                {
+                    _carService.Update(car);
+                }
+                else
+                {
+                    _carService.AddNew(car);
+                }
+                return RedirectToAction("Cars");
+            }
+           
+            return View("UpdateOrCreate", car);
         }
-        public IActionResult Update(int Id)
+        [Authorize(Roles = "admin")]
+        public IActionResult UpdateOrCreate(int Id)
         {
-            return View(_carService.GetAll().FirstOrDefault(c => c.Id == Id));
+            var car = _carService.GetAll().FirstOrDefault(c => c.Id == Id);
+            if (car is not null)
+            {
+                return View("UpdateOrCreate", car);
+            }
+            return View("UpdateOrCreate", new Car());
         }
 
     }

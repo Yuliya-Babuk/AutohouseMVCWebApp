@@ -1,0 +1,73 @@
+﻿@using MVCAppAutohouse.DAL.Entities;
+@using AppAutohouse.BLL;
+@model Car
+@inject IBrandService brandService
+
+@{
+    ViewData["Title"] = "Add/update car";
+}
+<div>
+    @Html.ValidationSummary()
+</div>
+
+<form action="/Catalog/UpdateOrCreate" method="post">
+
+    <div class="mb-3 row">
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="ID" value="@Model.Id" hidden />
+            <span class="text-danger field-validation-error" asp-validation-for="@Model.Id"></span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="Brand" class="col-sm-2 col-form-label">Brand</label>
+        <div class="col-sm-3">
+            <select class="form-select" aria-label="Default select example" name="BrandId">
+                @foreach (var brand in brandService.GetAll())
+                {
+                    <option value="@brand.Id">@brand.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="Model" class="col-sm-2 col-form-label">Model</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" asp-for="Model">
+            <span class="text-danger field-validation-error" asp-validation-for="@Model.Model"></span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="EngineType" class="col-sm-2 col-form-label">Engine Type</label>
+        <div class="col-sm-3">
+            <select class="form-select" aria-label="Default select example" name="EngineType">
+                @foreach (var engineType in Enum.GetValues(Model.EngineType.GetType()))
+                {
+                    <option value="@Model.EngineType">@engineType</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="EngineSize" class="col-sm-2 col-form-label">Engine Size</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" asp-for="EngineSize">
+            <span class="text-danger field-validation-error" asp-validation-for="@Model.EngineSize"></span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="Year" class="col-sm-2 col-form-label">Year</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" asp-for="Year">
+            <span class="text-danger field-validation-error" asp-validation-for="@Model.Year"></span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="Price" class="col-sm-2 col-form-label">Price</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" asp-for="Price">
+            <span class="text-danger field-validation-error" asp-validation-for="@Model.Price"></span>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mb-3">Save</button>
+</form>
+

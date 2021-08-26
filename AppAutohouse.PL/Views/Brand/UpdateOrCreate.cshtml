@@ -3,16 +3,24 @@
 @model Brand
 
 @{
-
-    Layout = "_Layout";
+    ViewData["Title"] = "Add/update brand";
 }
+<div>
+    @Html.ValidationSummary()
+</div>
 
-<form action="/Brand/Update" method="post">
+<form action="/Brand/UpdateOrCreate" method="post">
 
     <div class="mb-3 row">
-        <label for="ID" class="col-sm-2 col-form-label">ID</label>
         <div class="col-sm-3">
-            <input type="text" class="form-control" name="Id" value="@Model.Id" readonly />
+            <input type="text" class="form-control" name="Id" value="@Model.Id" hidden />
+            <span class="text-danger field-validation-error" asp-validation-for="@Model.Id"></span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="Logo" class="col-sm-2 col-form-label">Logo</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="Logo" value="@Model.Logo" />
         </div>
     </div>
     <div class="mb-3 row">
@@ -27,8 +35,8 @@
             <input type="text" class="form-control" name="Description" value="@Model.Description">
         </div>
     </div>
-    
-    <button type="submit" class="btn btn-primary mb-3">Update</button>
+
+    <button type="submit" class="btn btn-primary mb-3">Save</button>
 </form>
 
 

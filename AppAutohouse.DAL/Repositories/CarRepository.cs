@@ -34,15 +34,19 @@ namespace MVCAppAutohouse.DAL.Repositories
         }
         public IEnumerable<Car> GetAll()
         {
-            return _context.Cars.Include(x=>x.Brand);
+            return _context.Cars.AsNoTracking().Include(x => x.Brand);
 
         }
-        public void Update(Car car)
+        public Car GetById(int id)
         {
-            var carToUpdate = _context.Cars.FirstOrDefault(r => r.Id == car.Id);
-            _context.Entry(carToUpdate).CurrentValues.SetValues(car);
-            _context.SaveChanges();
+            var res = _context.Cars.Include(x => x.Brand).FirstOrDefault(x => x.Id == id);
+            return res;
+        }
 
+            public void Update(Car car)
+        {
+            _context.Entry(car).State = EntityState.Modified;
+            _context.SaveChanges();
         }
     }
 }

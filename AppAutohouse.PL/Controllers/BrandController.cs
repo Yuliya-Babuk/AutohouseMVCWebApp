@@ -1,7 +1,10 @@
 ﻿using AppAutohouse.BLL;
+using AppAutohouse.PL.Mappers;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVCAppAutohouse.DAL.Entities;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AppAutohouse.PL
@@ -9,11 +12,11 @@ namespace AppAutohouse.PL
     public class BrandController : Controller
 
     {
-        private readonly IService<Brand> _brandService;
-        private readonly IService<Car> _carService;
+        private readonly IBrandService _brandService;
+        private readonly ICarService _carService;
         private readonly IMapper _mapper;
 
-        public BrandController(IService<Brand> brandService, IService<Car> carService, IMapper mapper)
+        public BrandController(IBrandService brandService, ICarService carService, IMapper mapper)
         {
             _carService = carService;
             _brandService = brandService;
@@ -26,40 +29,49 @@ namespace AppAutohouse.PL
             return View(_brandService.GetAll()); //передаем браузеру
         }
 
-        public IActionResult AddBrand()
-        {
-            return View();
-        }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult AddBrand(Brand newBrand) //получаем от браузера
+        public IActionResult DeleteBrand(int id)
         {
-            _brandService.AddNew(newBrand);
+            _brandService.Delete(id);
             return RedirectToAction("Brands");
         }
 
-        [HttpPost]
-        public IActionResult DeleteBrand(int Id)
+        public IActionResult GetInfoById(int id)
         {
-            _brandService.Delete(Id);
-            return RedirectToAction("Brands");
-        }
-
-        public IActionResult GetInfoById(int Id)
-        {
-            var cars = _carService.GetAll().Where(c => c.BrandId == Id);
+            var cars = _carService.GetAll().Where(x=>x.BrandId ==id);
             return View(cars);
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult Update(Brand brand)
+        public IActionResult UpdateOrCreate(Brand brand)
         {
-            _brandService.Update(brand);
-            return RedirectToAction("Brands");
+            if (ModelState.IsValid)
+            {
+                var res = _brandService.GetAll().FirstOrDefault(c => c.Id == brand.Id);
+                if (res is not null)
+                {
+                    _brandService.Update(brand);
+                }
+                else
+                {
+                    _brandService.AddNew(brand);
+                }
+                return RedirectToAction("Brands");
+            }
+
+            return View("UpdateOrCreate", brand);
         }
-        public IActionResult Update(int Id)
+
+        [Authorize(Roles = "admin")]
+        public IActionResult UpdateOrCreate(int id)
         {
-            return View(_brandService.GetAll().FirstOrDefault(c => c.Id == Id));
+            var brand = _brandService.GetAll().FirstOrDefault(c => c.Id == id);
+            if (brand is not null)
+            {
+                return View("UpdateOrCreate", brand);
+            }
+            return View("UpdateOrCreate", new Brand());
         }
 
     }

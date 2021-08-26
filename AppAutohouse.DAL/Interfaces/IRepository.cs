@@ -8,6 +8,6 @@ namespace MVCAppAutohouse.DAL.Interfaces
         void AddNew(T item);
         void Update(T item);
         void Delete(int id);
-
+        T GetById(int id);       
     }
 }
