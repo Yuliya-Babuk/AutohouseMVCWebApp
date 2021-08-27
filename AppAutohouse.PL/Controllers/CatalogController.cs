@@ -1,16 +1,17 @@
 ﻿using AppAutohouse.BLL;
-using AppAutohouse.PL.Mappers;
 using AppAutohouse.PL.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVCAppAutohouse.DAL.Entities;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AppAutohouse.PL
 {
-    
+
     public class CatalogController : Controller
 
     {
@@ -31,19 +32,29 @@ namespace AppAutohouse.PL
             return View(_mapper.Map<IEnumerable<CarModel>>(_carService.GetAll()));
             //передаем браузеру
         }
-                
+
         [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult DeleteCar(int id)
         {
-            _carService.Delete(id);
+            try
+            {
+                _carService.Delete(id);
+
+            }
+            catch (Exception e)
+            {
+                Log.Error(e?.Message);
+                Log.Error(e?.InnerException?.Message);
+                ModelState.AddModelError("key", "Something goes wrong");
+            }
             return RedirectToAction("Cars");
         }
 
         public IActionResult GetInfoById(int id)
         {
             var car = _carService.GetById(id);
-           
+
             return View(car);
         }
 
@@ -64,7 +75,7 @@ namespace AppAutohouse.PL
                 }
                 return RedirectToAction("Cars");
             }
-           
+
             return View("UpdateOrCreate", car);
         }
         [Authorize(Roles = "admin")]

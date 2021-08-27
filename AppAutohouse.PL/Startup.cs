@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using MVCAppAutohouse.DAL.Entities;
 using MVCAppAutohouse.DAL.Interfaces;
 using MVCAppAutohouse.DAL.Repositories;
+using Serilog;
 using System;
 using System.Threading.Tasks;
 
@@ -49,6 +50,10 @@ namespace AppAutohouse.PL
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<IRepository<Brand>, BrandRepository>();
             services.AddScoped<IBrandService, BrandService>();
+
+            Log.Logger = new LoggerConfiguration()
+                     .WriteTo.Console()
+                        .CreateLogger();
 
 
 

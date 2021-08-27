@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppAutohouse.DAL", "AppAuto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppAutohouse.BLL", "AppAutohouse.BLL\AppAutohouse.BLL.csproj", "{D5AE6F16-22CB-47B9-94CB-8E3DD7B263BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{3258FA2E-BC8A-476A-9849-DA52802018EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{3258FA2E-BC8A-476A-9849-DA52802018EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
