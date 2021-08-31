@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppAutohouse.DAL.Migrations
 {
     [DbContext(typeof(AutohouseContext))]
-    [Migration("20210816151641_M")]
-    partial class M
+    [Migration("20210827101625_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,12 +29,15 @@ namespace AppAutohouse.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Logo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -46,21 +49,21 @@ namespace AppAutohouse.DAL.Migrations
                         {
                             Id = 1,
                             Description = "Audi is the most prominent car brand for designing the best car interiors, with easy and accessible controls. Its MMI infotainment system is among the best available amongst the other brands. This car brand has the biggest vehicle line ups from being super-mini to being supra huge with the best available diesel and hybrid engines making it prominent for road racing.",
-                            Logo = "https://pngimg.com/uploads/car_logo/car_logo_PNG1640.png",
+                            Logo = "/images/car_logo_audi.png",
                             Name = "Audi"
                         },
                         new
                         {
                             Id = 2,
                             Description = "With a wide range of innovative vehicle model, this car brand is known for its reliability and luxury status. This automobile company has serves its customers with luxurious piloting on the roads, while making sure that comfort has been served, from its passenger vehicles to its SUV, it will always be a great ride.",
-                            Logo = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/270px-BMW.svg.png",
+                            Logo = "/images/car_logo_bmw.png",
                             Name = "BMW"
                         },
                         new
                         {
                             Id = 3,
                             Description = "This car brand is attentive enough with it comes to detailing of their model, each model is well detailed with the best technological features as well as well-equipped model design. This car brand is the most stylish and comfortable amongst the other car brands in terms of its design and affordability with a favourable service cost.",
-                            Logo = "https://cdn.freelogovectors.net/wp-content/uploads/2018/04/volkswagen-logo.png",
+                            Logo = "/images/car_logo_vw.png",
                             Name = "Volkswagen"
                         });
                 });
@@ -75,7 +78,8 @@ namespace AppAutohouse.DAL.Migrations
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
 
-                    b.Property<double>("EngineSize")
+                    b.Property<double?>("EngineSize")
+                        .IsRequired()
                         .HasColumnType("float");
 
                     b.Property<int>("EngineType")
@@ -85,10 +89,12 @@ namespace AppAutohouse.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Price")
+                    b.Property<int?>("Price")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("Year")
+                    b.Property<int?>("Year")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -273,12 +279,10 @@ namespace AppAutohouse.DAL.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -315,12 +319,10 @@ namespace AppAutohouse.DAL.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");

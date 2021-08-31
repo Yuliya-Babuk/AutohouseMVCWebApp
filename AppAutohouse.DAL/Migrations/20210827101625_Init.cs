@@ -3,31 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppAutohouse.DAL.Migrations
 {
-    public partial class M : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "TypeEngine",
-                table: "Cars");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Model",
-                table: "Cars",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "EngineType",
-                table: "Cars",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -65,6 +44,21 @@ namespace AppAutohouse.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Brands",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Brands", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,8 +107,8 @@ namespace AppAutohouse.DAL.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -158,8 +152,8 @@ namespace AppAutohouse.DAL.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -173,19 +167,59 @@ namespace AppAutohouse.DAL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.UpdateData(
-                table: "Cars",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "EngineType",
-                value: 1);
+            migrationBuilder.CreateTable(
+                name: "Cars",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BrandId = table.Column<int>(type: "int", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EngineType = table.Column<int>(type: "int", nullable: false),
+                    EngineSize = table.Column<double>(type: "float", nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cars_Brands_BrandId",
+                        column: x => x.BrandId,
+                        principalTable: "Brands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
-            migrationBuilder.UpdateData(
+            migrationBuilder.InsertData(
+                table: "Brands",
+                columns: new[] { "Id", "Description", "Logo", "Name" },
+                values: new object[] { 1, "Audi is the most prominent car brand for designing the best car interiors, with easy and accessible controls. Its MMI infotainment system is among the best available amongst the other brands. This car brand has the biggest vehicle line ups from being super-mini to being supra huge with the best available diesel and hybrid engines making it prominent for road racing.", "/images/car_logo_audi.png", "Audi" });
+
+            migrationBuilder.InsertData(
+                table: "Brands",
+                columns: new[] { "Id", "Description", "Logo", "Name" },
+                values: new object[] { 2, "With a wide range of innovative vehicle model, this car brand is known for its reliability and luxury status. This automobile company has serves its customers with luxurious piloting on the roads, while making sure that comfort has been served, from its passenger vehicles to its SUV, it will always be a great ride.", "/images/car_logo_bmw.png", "BMW" });
+
+            migrationBuilder.InsertData(
+                table: "Brands",
+                columns: new[] { "Id", "Description", "Logo", "Name" },
+                values: new object[] { 3, "This car brand is attentive enough with it comes to detailing of their model, each model is well detailed with the best technological features as well as well-equipped model design. This car brand is the most stylish and comfortable amongst the other car brands in terms of its design and affordability with a favourable service cost.", "/images/car_logo_vw.png", "Volkswagen" });
+
+            migrationBuilder.InsertData(
                 table: "Cars",
-                keyColumn: "Id",
-                keyValue: 3,
-                column: "EngineType",
-                value: 1);
+                columns: new[] { "Id", "BrandId", "EngineSize", "EngineType", "Model", "Price", "Year" },
+                values: new object[] { 1, 1, 2.2000000000000002, 0, "A6", 8500, 2008 });
+
+            migrationBuilder.InsertData(
+                table: "Cars",
+                columns: new[] { "Id", "BrandId", "EngineSize", "EngineType", "Model", "Price", "Year" },
+                values: new object[] { 2, 1, 2.5, 1, "A8", 13500, 2010 });
+
+            migrationBuilder.InsertData(
+                table: "Cars",
+                columns: new[] { "Id", "BrandId", "EngineSize", "EngineType", "Model", "Price", "Year" },
+                values: new object[] { 3, 2, 3.2000000000000002, 1, "X6", 20500, 2020 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -225,6 +259,11 @@ namespace AppAutohouse.DAL.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cars_BrandId",
+                table: "Cars",
+                column: "BrandId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -245,49 +284,16 @@ namespace AppAutohouse.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Cars");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.DropColumn(
-                name: "EngineType",
-                table: "Cars");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Model",
-                table: "Cars",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
-
-            migrationBuilder.AddColumn<string>(
-                name: "TypeEngine",
-                table: "Cars",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.UpdateData(
-                table: "Cars",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "TypeEngine",
-                value: "Petrol");
-
-            migrationBuilder.UpdateData(
-                table: "Cars",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "TypeEngine",
-                value: "Diesel");
-
-            migrationBuilder.UpdateData(
-                table: "Cars",
-                keyColumn: "Id",
-                keyValue: 3,
-                column: "TypeEngine",
-                value: "Diesel");
+            migrationBuilder.DropTable(
+                name: "Brands");
         }
     }
 }

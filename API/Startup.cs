@@ -27,7 +27,7 @@ namespace API
         {
 
             services.AddDbContext<AutohouseContext>(options =>
-            options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=AutohouseDb;Trusted_Connection=True;"));
+           options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Autohouse;Trusted_Connection=True;"));
 
 
             services.AddScoped<IRepository<Car>, CarRepository>();

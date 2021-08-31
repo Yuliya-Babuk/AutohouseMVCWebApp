@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("Brands")]
     public class BrandController : Controller
     {
         private readonly IBrandService _brandService;
@@ -21,7 +21,7 @@ namespace API.Controllers
            
         }
 
-        [HttpGet("brands")]
+        [HttpGet]
         public IActionResult Brands()
         {
             return Ok(_brandService.GetAll());

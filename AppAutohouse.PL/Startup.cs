@@ -39,7 +39,7 @@ namespace AppAutohouse.PL
             services.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Car>());
 
             services.AddDbContext<AutohouseContext>(options =>
-            options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=AutohouseDb;Trusted_Connection=True;"));
+            options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Autohouse;Trusted_Connection=True;"));
 
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddDefaultUI()

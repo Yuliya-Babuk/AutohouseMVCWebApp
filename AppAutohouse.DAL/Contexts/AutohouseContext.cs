@@ -13,14 +13,12 @@ namespace AppAutohouse.DAL.Context
         public DbSet<Car> Cars { get; set; } = default!;
         public DbSet<Brand> Brands { get; set; } = default!;
         public AutohouseContext(DbContextOptions<AutohouseContext> options) : base(options)
-        {
-            Database.EnsureCreated();
-        }
+        { }
         protected AutohouseContext()
         {
         }
         protected override void OnModelCreating(ModelBuilder builder)
-        { 
+        {
             base.OnModelCreating(builder);
             builder.Seed();
         }
