@@ -1,21 +1,47 @@
-﻿@{
+﻿@using AppAutohouse.BLL
+
+@inject IRoleIdentifierService roleIdenfierService
+@{
     ViewData["Title"] = "Home Page";
-    Layout = "_LayoutHome";
 }
 
-<div class="accordion ">
+<div class="bg-image"
+     style="
+      background-image: url('https://stat.overdrive.in/wp-content/uploads/2017/05/Air-conditioning-Test-Hatchbacks3.jpg'); height: 100vh; background-size: cover;">
 
-    <h1 class="display-5 text-center">Autohouse</h1>
-    <h1 class="display-4 text-center">"Drive your Dream"</h1>
-    <ul class="navbar-nav flex-grow-1 justify-content-center">
-        <li class="nav-item" text-center>
-            <h1><a class="nav-link text-dark text-center" asp-controller="Catalog" asp-action="Cars">Cars</a></h1>
-        </li>
-        <li>
-            <h1><a class="nav-link text-dark text-center" asp-controller="Brand" asp-action="Brands">Brands</a></h1>
-        </li>
+    <h1 class="display-5 text-center">Autohouse "Drive your Dream"</h1>
+   
+    <div class="accordion "
+         style=" 
+    /* Fallback color */ /* Black w/opacity/see-through */ 
+    color: white; font-weight: bold; position: absolute; top: 60%; 
+    left: 50%; transform: translate(-50%, -50%); z-index: 2; width: 50%; padding: 20px; text-align: center;">
 
-    </ul>
+        <ul class="navbar-nav flex-grow-1 justify-content-center">
+            @if (roleIdenfierService.IsAdmin())
+            {
+                <li >
+                    <h1><a class="nav-link text-dark text-center " asp-controller="catalog" asp-action="">Cars</a></h1>
+                </li>
+                <li>
+                    <h1><a class="nav-link text-dark text-center" asp-controller="brands" asp-action="">Brands</a></h1>
+                </li>
+            }
+            @if (roleIdenfierService.IsAdmin() || roleIdenfierService.IsManager())
+            {
+                <li>
+                    <h1><a class="nav-link text-dark text-center" asp-controller="requests">New requests</a></h1>
+                </li>
+                <li>
+                    <h1><a class="nav-link text-dark text-center" asp-controller="confirmed-requests">Confirmed requests</a></h1>
+                </li>
+                <li>
+                    <h1><a class="nav-link text-dark text-center" asp-controller="declined-requests">Declined requests</a></h1>
+                </li>
+            }
+        </ul>
+    </div>
 </div>
+
 
 
