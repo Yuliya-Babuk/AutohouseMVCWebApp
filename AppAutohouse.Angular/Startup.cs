@@ -1,9 +1,16 @@
+using AppAutohouse.BLL;
+using AppAutohouse.DAL.Context;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MVCAppAutohouse.DAL.Repositories;
+using Newtonsoft.Json.Converters;
 using Serilog;
 
 namespace AppAutohouse.Angular
@@ -20,7 +27,13 @@ namespace AppAutohouse.Angular
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                }
+          );
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -30,23 +43,34 @@ namespace AppAutohouse.Angular
             Log.Logger = new LoggerConfiguration()
                   .WriteTo.Console()
                      .CreateLogger();
-                    
+
+            services.AddDbContext<AutohouseContext>(options =>
+            options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Autohouse;Trusted_Connection=True;"));
+
+            services.AddScoped<CarRepository>();
+            services.AddScoped<ICarService, CarService>();
+            services.AddScoped<BrandRepository>();
+            services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<RequestRepository>();
+            services.AddScoped<IRequestService, RequestService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseExceptionMiddleware();
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+               // app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
@@ -55,7 +79,7 @@ namespace AppAutohouse.Angular
             }
 
             app.UseRouting();
-           
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -75,7 +99,7 @@ namespace AppAutohouse.Angular
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
-           
+
         }
     }
 }
