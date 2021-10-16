@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MVCAppAutohouse.DAL.Entities
+namespace AppAutohouse.DAL.Entities
 {
     public class Brand
     {

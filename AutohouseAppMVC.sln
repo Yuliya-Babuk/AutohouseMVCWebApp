@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppAutohouse.BLL", "AppAuto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{3258FA2E-BC8A-476A-9849-DA52802018EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAutohouse.Angular", "AppAutohouse.Angular\AppAutohouse.Angular.csproj", "{C024E329-82CC-4499-AC28-5D7E22B40581}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppAutohouse.Angular", "AppAutohouse.Angular\AppAutohouse.Angular.csproj", "{C024E329-82CC-4499-AC28-5D7E22B40581}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

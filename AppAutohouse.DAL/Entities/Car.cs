@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using FluentValidation;
-using AppAutohouse.DAL.Validators;
 
 
-namespace MVCAppAutohouse.DAL.Entities
+
+namespace AppAutohouse.DAL.Entities
 {
     public class Car
     {
@@ -16,10 +15,11 @@ namespace MVCAppAutohouse.DAL.Entities
         [Required]
         public double? EngineSize { get; set; }
         [Required]
-        [Range(2010,2021)]
+        [Range(2000, 2021)]
         public int? Year { get; set; }
         [Required]
         public int? Price { get; set; }
+        public byte[] Photo { get; set; }
 
     }
     public enum EngineType

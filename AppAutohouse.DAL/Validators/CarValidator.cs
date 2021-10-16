@@ -1,11 +1,10 @@
-﻿using FluentValidation;
-using MVCAppAutohouse.DAL.Entities;
+﻿using AppAutohouse.DAL.Entities;
+using FluentValidation;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AppAutohouse.DAL.Validators
 {
+    //TODO: not in use
     class CarValidator: AbstractValidator<Car>
     {
        public CarValidator()

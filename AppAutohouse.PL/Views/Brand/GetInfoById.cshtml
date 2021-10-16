@@ -1,36 +1,36 @@
-﻿@using MVCAppAutohouse.DAL.Entities;
+﻿@using AppAutohouse.DAL.Entities;
 
 @model IEnumerable<Car>
 
 @{
     ViewData["Title"] = "Car info";    
 }
+<div class="container">
+    <table class="table table-striped table-success table table-hover table table-bordered">
+        <thead>
+            <tr class="table-warning">
 
-<table class="table table-striped table-success table table-hover table table-bordered">
-    <thead>
-        <tr class="table-warning">
-           
-            <th>    Brand</th>
-            <th>    Model</th>
-            <th>    Engine Type</th>
-            <th>    Engine Size, L</th>
-            <th>    Year</th>
-            <th>    Price, $</th>
-        </tr>
-    </thead>
+                <th>    Brand</th>
+                <th>    Model</th>
+                <th>    Engine Type</th>
+                <th>    Engine Size, L</th>
+                <th>    Year</th>
+                <th>    Price, $</th>
+            </tr>
+        </thead>
 
 
-    @foreach (var item in @Model)
-    {
-        <tr>
-            
-            <td>@item.Brand.Name</td>
-            <td>@item.Model</td>
-            <td>@item.EngineType</td>
-            <td>@item.EngineSize</td>
-            <td>@item.Year</td>
-            <td>@item.Price</td>
-        </tr>
-}
-</table>
+        @foreach (var item in @Model)
+        {
+            <tr>
 
+                <td>@item.Brand.Name</td>
+                <td>@item.Model</td>
+                <td>@item.EngineType</td>
+                <td>@item.EngineSize</td>
+                <td>@item.Year</td>
+                <td>@item.Price</td>
+            </tr>
+        }
+    </table>
+</div>

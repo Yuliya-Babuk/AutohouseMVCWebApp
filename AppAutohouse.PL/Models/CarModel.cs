@@ -1,7 +1,6 @@
-﻿using AppAutohouse.PL.Mappers;
-using AutoMapper;
-using AutoMapper.Configuration.Annotations;
-using MVCAppAutohouse.DAL.Entities;
+﻿using AppAutohouse.DAL.Entities;
+using AppAutohouse.PL.Mappers;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace AppAutohouse.PL.Models
@@ -17,9 +16,10 @@ namespace AppAutohouse.PL.Models
         [Required]
         public double? EngineSize { get; set; }
         [Required]
-        [Range(2010, 2021)]
+        [Range(2000, 2021)]
         public int? Year { get; set; }
         [Required]
-        public int? Price { get; set; }        
+        public int? Price { get; set; }
+        public IFormFile Photo { get; set; }
     }    
 }

@@ -1,4 +1,5 @@
-﻿using AppAutohouse.PL.Models;
+﻿using AppAutohouse.DAL.Entities;
+using AppAutohouse.PL.Models;
 using AutoMapper;
 using MVCAppAutohouse.DAL.Entities;
 using System;
@@ -12,8 +13,9 @@ namespace AppAutohouse.PL.Mappers
     {
         public MappingProfile()
         {
-            CreateMap<Car, CarModel>().ReverseMap();
+            CreateMap<Car, CarModel>().ReverseMap().ForMember(x=>x.Photo,opt=>opt.Ignore());
             CreateMap<Brand, BrandModel>().ReverseMap();
+            CreateMap<Request, RequestModel>().ReverseMap();
         }
     }
 }

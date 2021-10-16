@@ -1,9 +1,8 @@
 ﻿using AppAutohouse.DAL.Contexts;
+using AppAutohouse.DAL.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MVCAppAutohouse.DAL.Entities;
-using System;
-using System.Collections.Generic;
 
 
 namespace AppAutohouse.DAL.Context
@@ -12,8 +11,12 @@ namespace AppAutohouse.DAL.Context
     {
         public DbSet<Car> Cars { get; set; } = default!;
         public DbSet<Brand> Brands { get; set; } = default!;
+        public DbSet<Request> Requests { get; set; } = default!;       
         public AutohouseContext(DbContextOptions<AutohouseContext> options) : base(options)
-        { }
+        {
+          // Database.EnsureDeleted();
+          // Database.EnsureCreated();
+        }
         protected AutohouseContext()
         {
         }
@@ -22,5 +25,6 @@ namespace AppAutohouse.DAL.Context
             base.OnModelCreating(builder);
             builder.Seed();
         }
+
     }
 }

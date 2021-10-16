@@ -4,14 +4,16 @@ using AppAutohouse.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppAutohouse.DAL.Migrations
 {
     [DbContext(typeof(AutohouseContext))]
-    partial class AutohouseContextModelSnapshot : ModelSnapshot
+    [Migration("20211010191609_AddPhotoToCar")]
+    partial class AddPhotoToCar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace AppAutohouse.DAL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AppAutohouse.DAL.Entities.Brand", b =>
+            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Brand", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,7 +68,7 @@ namespace AppAutohouse.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AppAutohouse.DAL.Entities.Car", b =>
+            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Car", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -151,7 +153,6 @@ namespace AppAutohouse.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RequestState")
@@ -172,7 +173,7 @@ namespace AppAutohouse.DAL.Migrations
                             Id = 1,
                             CarId = 1,
                             Name = "Yuliya",
-                            PhoneNumber = "+375291199719",
+                            PhoneNumber = "111",
                             RequestState = 0,
                             Surname = "Babuk"
                         });
@@ -374,9 +375,9 @@ namespace AppAutohouse.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AppAutohouse.DAL.Entities.Car", b =>
+            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Car", b =>
                 {
-                    b.HasOne("AppAutohouse.DAL.Entities.Brand", "Brand")
+                    b.HasOne("MVCAppAutohouse.DAL.Entities.Brand", "Brand")
                         .WithMany("Cars")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -387,7 +388,7 @@ namespace AppAutohouse.DAL.Migrations
 
             modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Request", b =>
                 {
-                    b.HasOne("AppAutohouse.DAL.Entities.Car", "Car")
+                    b.HasOne("MVCAppAutohouse.DAL.Entities.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -447,7 +448,7 @@ namespace AppAutohouse.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AppAutohouse.DAL.Entities.Brand", b =>
+            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Brand", b =>
                 {
                     b.Navigation("Cars");
                 });

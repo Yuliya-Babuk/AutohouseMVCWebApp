@@ -13,12 +13,7 @@ namespace AppAutohouse.PL.Mappers
         public string Description { get; set; }
         [Required]
         public string Logo { get; set; }
-        public List<CarModel> Cars { get; set; }
-
-        //public BrandModel()
-        //{
-        //    Cars = new List<CarModel>();
-        //}
+        public List<CarModel> Cars { get; set; }       
 
     }
 }

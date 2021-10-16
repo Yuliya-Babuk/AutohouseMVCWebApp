@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AppAutohouse.BLL
 {
     public interface IService<T>
     {
         IEnumerable<T> GetAll();
-        void AddNew(T item);
-        void Update(T item);
-        void Delete(int id);
-        T GetById(int id);
+        Task AddNewAsync(T item);
+        Task UpdateAsync(T item);
+        Task DeleteAsync(int id);
+        Task<T> GetByIdAsync(int id);
 
     }
 }

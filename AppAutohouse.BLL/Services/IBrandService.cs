@@ -1,4 +1,4 @@
-﻿using MVCAppAutohouse.DAL.Entities;
+﻿using AppAutohouse.DAL.Entities;
 using System.Collections.Generic;
 
 namespace AppAutohouse.BLL

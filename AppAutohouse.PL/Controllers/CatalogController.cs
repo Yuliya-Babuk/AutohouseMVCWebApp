@@ -1,23 +1,22 @@
 ﻿using AppAutohouse.BLL;
+using AppAutohouse.DAL.Entities;
 using AppAutohouse.PL.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MVCAppAutohouse.DAL.Entities;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace AppAutohouse.PL
 {
-
+    [Authorize(Roles = "admin")]
     public class CatalogController : Controller
 
     {
         private readonly IBrandService _brandService;
         private readonly ICarService _carService;
         private readonly IMapper _mapper;
+
 
         public CatalogController(IBrandService brandService, ICarService carService, IMapper mapper)
         {
@@ -29,65 +28,75 @@ namespace AppAutohouse.PL
         [Route("[controller]")]
         public IActionResult Cars()
         {
-            return View(_mapper.Map<IEnumerable<CarModel>>(_carService.GetAll()));
+            return View(_carService.GetAll());
             //передаем браузеру
         }
 
-        [Authorize(Roles = "admin")]
-        [HttpPost]
-        public IActionResult DeleteCar(int id)
-        {
-            try
-            {
-                _carService.Delete(id);
 
-            }
-            catch (Exception e)
-            {
-                Log.Error(e?.Message);
-                Log.Error(e?.InnerException?.Message);
-                ModelState.AddModelError("key", "Something goes wrong");
-            }
+        [HttpPost]
+        public async Task<IActionResult> DeleteCarAsync(int id)
+        {
+            await _carService.DeleteAsync(id);
             return RedirectToAction("Cars");
         }
 
-        public IActionResult GetInfoById(int id)
+        public async Task<IActionResult> GetInfoByIdAsync(int id)
         {
-            var car = _carService.GetById(id);
-
+            var car = await _carService.GetByIdAsync(id);
             return View(car);
         }
 
-        [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult UpdateOrCreate(Car car)
-        {
+        public async Task<IActionResult> UpdateOrCreateAsync(CarModel carModel)
+        {         
+
             if (ModelState.IsValid)
             {
-                var res = _carService.GetAll().FirstOrDefault(c => c.Id == car.Id);
+                var car = _mapper.Map<Car>(carModel);
+
+                if(carModel.Photo != null)
+                {
+                    await using var memoryStream = new MemoryStream();
+
+                    await carModel.Photo.CopyToAsync(memoryStream);
+
+                    var content = memoryStream.ToArray();
+
+                    car.Photo = content;
+                }              
+
+                var res = await _carService.GetByIdAsync(car.Id);
+             
                 if (res is not null)
                 {
-                    _carService.Update(car);
+                    if(car.Photo is null)
+                    {
+                        car.Photo = res.Photo;
+                    }
+                
+                    await _carService.UpdateAsync(car);
                 }
                 else
                 {
-                    _carService.AddNew(car);
+                    await _carService.AddNewAsync(car);
                 }
                 return RedirectToAction("Cars");
             }
-
-            return View("UpdateOrCreate", car);
+            else ModelState.AddModelError("", "Something goes wrong");
+            return View("UpdateOrCreate", _mapper.Map<Car>(carModel));
         }
-        [Authorize(Roles = "admin")]
-        public IActionResult UpdateOrCreate(int Id)
+
+        public async Task<IActionResult> UpdateOrCreateAsync(int id)
         {
-            var car = _carService.GetAll().FirstOrDefault(c => c.Id == Id);
+            var car = await _carService.GetByIdAsync(id);
             if (car is not null)
             {
                 return View("UpdateOrCreate", car);
             }
             return View("UpdateOrCreate", new Car());
         }
+
+     
 
     }
 }

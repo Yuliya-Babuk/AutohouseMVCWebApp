@@ -1,11 +1,8 @@
 ﻿using AppAutohouse.BLL;
-using AppAutohouse.PL.Mappers;
-using AutoMapper;
+using AppAutohouse.DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MVCAppAutohouse.DAL.Entities;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppAutohouse.PL
 {
@@ -13,17 +10,15 @@ namespace AppAutohouse.PL
 
     {
         private readonly IBrandService _brandService;
-        private readonly ICarService _carService;
-        private readonly IMapper _mapper;
+        private readonly ICarService _carService;       
 
-        public BrandController(IBrandService brandService, ICarService carService, IMapper mapper)
+        public BrandController(IBrandService brandService, ICarService carService)
         {
             _carService = carService;
-            _brandService = brandService;
-            _mapper = mapper;
+            _brandService = brandService;            
         }
 
-        [Route("[controller]")]
+        [Route("brands")]
         public IActionResult Brands()
         {
             return View(_brandService.GetAll()); //передаем браузеру
@@ -31,31 +26,31 @@ namespace AppAutohouse.PL
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult DeleteBrand(int id)
+        public async Task<IActionResult> DeleteBrandAsync(int id)
         {
-            _brandService.Delete(id);
+            await _brandService.DeleteAsync(id);
             return RedirectToAction("Brands");
         }
 
         public IActionResult GetInfoById(int id)
         {
-            var cars = _carService.GetAll().Where(x=>x.BrandId ==id);
+            var cars = _carService.GetAllByBrandId(id);
             return View(cars);
         }
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult UpdateOrCreate(Brand brand)
+        public async Task<IActionResult> UpdateOrCreateAsync(Brand brand)
         {
             if (ModelState.IsValid)
             {
-                var res = _brandService.GetAll().FirstOrDefault(c => c.Id == brand.Id);
+                var res =await _brandService.GetByIdAsync(brand.Id);
                 if (res is not null)
                 {
-                    _brandService.Update(brand);
+                    await _brandService.UpdateAsync(brand);
                 }
                 else
                 {
-                    _brandService.AddNew(brand);
+                    await _brandService.AddNewAsync(brand);
                 }
                 return RedirectToAction("Brands");
             }
@@ -64,9 +59,9 @@ namespace AppAutohouse.PL
         }
 
         [Authorize(Roles = "admin")]
-        public IActionResult UpdateOrCreate(int id)
+        public async Task<IActionResult> UpdateOrCreateAsync(int id)
         {
-            var brand = _brandService.GetAll().FirstOrDefault(c => c.Id == id);
+            var brand =await _brandService.GetByIdAsync(id);
             if (brand is not null)
             {
                 return View("UpdateOrCreate", brand);
