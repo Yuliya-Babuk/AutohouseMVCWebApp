@@ -1,25 +1,121 @@
+<h1 class="display-5 text-center">Autohouse</h1>
+<h1 class="display-4 text-center">"Drive your Dream"</h1>
 
-<table class="table table-striped table-success table-bordered table-hover">
-    <thead>
-        <tr class="table-warning">
-            <th>    Brand</th>
-            <th>    Model</th>
-            <th>    Engine Type</th>
-            <th>    Engine Size, L</th>
-            <th>    Year</th>           
-        </tr>
+<div>
+  <div class="row" style="margin-top: 5%; margin-left: 10%">
+    <div class="mb-3">
+      <form
+        class="d-flex"
+        [formGroup]="searchForm"
+        (ngSubmit)="Send()"
+        style="width: 91%"
+      >
+        <input
+          class="form-control me-2"
+          formControlName="searchInput"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button type="submit" class="btn btn-primary mb-3">Search</button>
+      </form>
+    </div>
 
-    <thead>
-        <tr *ngFor="let car of cars" >
+    <div class="col-11">
+      <div
+        class="card mb-4"
+        style="max-width: 900px; height: 160px"
+        *ngFor="let car of cars"
+      >
+        <div class="row g-1">
+          <div class="col-md-3">
+            <img
+              [src]="car.photo"
+              class="image-fluid rounded-start"
+              style="width: 110%; height: 90%"
+              alt="..."
+            />
+          </div>
 
-            <td>{{car.brand.name}}</td>
-            <td>{{car.model}}</td>
-            <td>{{car.engineType}}</td>
-            <td>{{car.engineSize}}</td>
-            <th>{{car.year}}</th>
-          
-        </tr>
-       
-</table>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a
+                  (click)="
+                    PassDataToModal(
+                      car.brand.logo,
+                      car.brand.description,
+                      car.brand.name
+                    )
+                  "
+                  href=""
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  style="text-decoration-line: underline"
+                  >{{ car.brand.name }}</a
+                >
+                {{ car.model }}
+              </h5>
 
+              <p class="card-text">
+                {{ car.engineType }}, {{ car.engineSize }}L, {{ car.year }}
+              </p>
 
+              <div class="card-text d-flex justify-content-between">
+                <small class="text-muted"> {{ car.price }} $</small>
+
+                <button
+                  type="button"
+                  (click)="RedirectToForm(car.id)"
+                  class="btn btn-outline-primary"
+                >
+                  Create request
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ name }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="container show-grid">
+          <div class="row">
+            <div class="col-4">
+              <img
+                src="{{ logo }}"
+                class="image-fluid rounded-start"
+                style="width: 110%; height: 90%"
+                alt="..."
+              />
+            </div>
+            <div class="col-8">
+              {{ description }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <app-brand-info-modal [logo]="asd" [description]="asd" [name]="asd"></app-brand-info-modal> -->
