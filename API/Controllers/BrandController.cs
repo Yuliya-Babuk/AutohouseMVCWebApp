@@ -1,10 +1,7 @@
 ﻿using AppAutohouse.BLL;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -13,18 +10,27 @@ namespace API.Controllers
     public class BrandController : Controller
     {
         private readonly IBrandService _brandService;
-            
-
         public BrandController(IBrandService brandService)
         {
             _brandService = brandService;
-           
+
         }
 
         [HttpGet]
         public IActionResult Brands()
         {
-            return Ok(_brandService.GetAll());
+            try
+            {
+                return Ok(_brandService.GetAll());
+            }
+            catch (Exception e)
+            {
+                Log.Error(e?.Message);
+                Log.Error(e?.InnerException?.Message);
+                ModelState.AddModelError("key", "Something goes wrong");
+                return BadRequest();
+
+            }
         }
     }
 }

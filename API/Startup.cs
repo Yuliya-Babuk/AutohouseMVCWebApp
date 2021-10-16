@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MVCAppAutohouse.DAL.Entities;
-using MVCAppAutohouse.DAL.Interfaces;
 using MVCAppAutohouse.DAL.Repositories;
+using Serilog;
 
 namespace API
 {
@@ -30,10 +30,14 @@ namespace API
            options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Autohouse;Trusted_Connection=True;"));
 
 
-            services.AddScoped<IRepository<Car>, CarRepository>();
+            services.AddScoped<CarRepository>();
             services.AddScoped<ICarService, CarService>();
-            services.AddScoped<IRepository<Brand>, BrandRepository>();
+            services.AddScoped<BrandRepository>();
             services.AddScoped<IBrandService, BrandService>();
+
+            Log.Logger = new LoggerConfiguration()
+                    .WriteTo.Console()
+                       .CreateLogger();
 
 
             services.AddControllers();
