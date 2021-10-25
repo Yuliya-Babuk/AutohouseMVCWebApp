@@ -1,43 +1,44 @@
-﻿@using MVCAppAutohouse.DAL.Entities;
+﻿@using AppAutohouse.DAL.Entities;
 
 @model Brand
 
 @{
     ViewData["Title"] = "Add/update brand";
 }
-<div>
-    @Html.ValidationSummary()
+<div class="container">
+    <div>
+        @Html.ValidationSummary(true)
+    </div>
+
+    <form action="/Brand/UpdateOrCreate" method="post">
+
+        <div class="mb-3 row">
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="Id" value="@Model.Id" hidden />
+                <span class="text-danger field-validation-error" asp-validation-for="@Model.Id"></span>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="Logo" class="col-sm-2 col-form-label">Logo</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="Logo" value="@Model.Logo" />
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="Name" class="col-sm-2 col-form-label">Brand</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="Name" value="@Model.Name" />
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="Model" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="Description" value="@Model.Description">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mb-3">Save</button>
+    </form>
 </div>
-
-<form action="/Brand/UpdateOrCreate" method="post">
-
-    <div class="mb-3 row">
-        <div class="col-sm-3">
-            <input type="text" class="form-control" name="Id" value="@Model.Id" hidden />
-            <span class="text-danger field-validation-error" asp-validation-for="@Model.Id"></span>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="Logo" class="col-sm-2 col-form-label">Logo</label>
-        <div class="col-sm-3">
-            <input type="text" class="form-control" name="Logo" value="@Model.Logo" />
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="Name" class="col-sm-2 col-form-label">Brand</label>
-        <div class="col-sm-3">
-            <input type="text" class="form-control" name="Name" value="@Model.Name" />
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="Model" class="col-sm-2 col-form-label">Description</label>
-        <div class="col-sm-3">
-            <input type="text" class="form-control" name="Description" value="@Model.Description">
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-primary mb-3">Save</button>
-</form>
-
 
 

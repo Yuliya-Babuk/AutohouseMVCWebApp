@@ -1,42 +1,47 @@
-﻿using MVCAppAutohouse.DAL.Entities;
-using MVCAppAutohouse.DAL.Interfaces;
-using MVCAppAutohouse.DAL.Repositories;
-using System.Collections.Generic;
+﻿using AppAutohouse.DAL.Repositories;
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using MVCAppAutohouse.DAL.Repositories;
+using AppAutohouse.DAL.Entities;
 
 namespace AppAutohouse.BLL
 {
     public class BrandService : IBrandService
 
     {
-        private readonly IRepository<Brand> _brandRepository;
+        private readonly BrandRepository _brandRepository;
 
-        public BrandService(IRepository<Brand> brandRepository)
+        public BrandService(BrandRepository brandRepository)
         {
             _brandRepository = brandRepository;
         }
 
-        public void AddNew(Brand item)
+        public async Task AddNewAsync(Brand item)
         {
-            _brandRepository.AddNew(item);
+           await _brandRepository.AddNewAsync(item);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _brandRepository.Delete(id);
+          await  _brandRepository.DeleteAsync(id);
         }
         public IEnumerable<Brand> GetAll()
         {
             return _brandRepository.GetAll();
         }
-        public Brand GetById(int id)
+        public async Task<Brand> GetByIdAsync(int id)
         {
-            return _brandRepository.GetById(id);
+            return await _brandRepository.GetByPredicateAsync( x=> x.Id == id, IsTracking: false);
         }
 
-        public void Update(Brand item)
+        public async Task UpdateAsync(Brand item)
         {
-            _brandRepository.Update(item);
+                    
+           
+                await _brandRepository.UpdateAsync(item);
+            
+           
         }
     }
 }

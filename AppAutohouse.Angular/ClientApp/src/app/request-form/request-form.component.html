@@ -1,0 +1,36 @@
+
+
+<div class="bg-image"
+     style=" background-image: url('https://d39a3h63xew422.cloudfront.net/wp-content/uploads/2015/07/20195212/formula-1-cars-in-an-unnatural-habitat-1476934602687-1000x616.jpg'); height: 100vh; background-size: cover; ">
+  <div style=" background-color: rgb(0, 0, 0); /* Fallback color */
+      background-color: rgba(88, 39, 39, 0.3); /* Black w/opacity/see-through */
+      font-weight: bold; position: absolute; top: 35%; left: 50%;
+      transform: translate(-50%, -50%); z-index: 2; width: 50%; padding: 20px; text-align: left; ">
+
+<div class="mb-3" *ngIf="requestErrors.length > 0">
+  <small *ngFor="let error of requestErrors" style="color:whitesmoke;">
+    <h5>{{ error }}</h5>
+  </small>
+</div>
+    <h1 style=" color: white;">
+      Request form
+    </h1>
+
+    <form [formGroup]="requestForm" (ngSubmit)="Send()">
+      <div class="form-floating mb-3">
+        <input formControlName="name" type="text" class="form-control" id="floatingInput" placeholder="">
+        <label for="floatingInput">Name</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input formControlName="surname" type="text" class="form-control" id="floatingInput" placeholder="">
+        <label for="floatingInput">Surname</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input formControlName="phoneNumber" type="text" class="form-control" id="floatingInput" placeholder="+375(__)___-__-__" required>
+        <label for="floatingInput">Phone number</label>
+      </div>
+
+      <button type="submit" class="btn btn-primary mb-3 btn-lg" sty>Send request</button>
+    </form>
+  </div>
+</div>
