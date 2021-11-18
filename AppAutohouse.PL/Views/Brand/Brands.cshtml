@@ -1,6 +1,7 @@
 ﻿@using AppAutohouse.DAL.Entities;
+@using AppAutohouse.PL.Models;
 
-@model IEnumerable<Brand>
+@model (IEnumerable<Brand>, int)
 
 @{
     ViewData["Title"] = "Brands";
@@ -16,24 +17,24 @@
 
         <thead>
 
-            <tr class="table-warning">
+            <tr class="table-warning" style="text-align:center">
                 <th class="col-1"> Logo</th>
                 <th class="col-1"> Brand</th>
                 <th class="col-6"> Description</th>
-                <th  class="col-3"></th>
+                <th class="col-3"> Controls</th>
             </tr>
 
         <thead>
 
-            @foreach (var item in @Model)
+            @foreach (var item in @Model.Item1)
             {
                 <tr>
-                    <td> <img src="@item.Logo" width="100" /> </td>
-                    <td>@item.Name</td>
+                    <td> <img src="@item.Logo" width="110" height="80" /> </td>
+                    <td style="vertical-align:middle; text-align:center">@item.Name</td>
                     <td>@item.Description</td>
 
-                    <td>
-                        <ul class="nav nav-pills px-3">
+                    <td style="vertical-align:middle">
+                        <ul class="nav nav-pills px-3" style="margin-left:30px; margin-top:1px">
 
                             <li class="nav-item px-2">
                                 <form action="/Brand/GetInfoById" method="get">
@@ -60,4 +61,6 @@
 
             }
     </table>
+    @await Html.PartialAsync("_PagesPartial", new PagesModel() { PagesAmount = Model.Item2, CurrentPage = (int)ViewBag.CurrentPage, Url = "/brands" })
 </div>
+

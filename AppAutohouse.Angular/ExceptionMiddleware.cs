@@ -18,13 +18,15 @@ namespace AppAutohouse.Angular
         public async Task InvokeAsync(HttpContext httpContext)
         {
             try
-            {
+            {                
                 await _next(httpContext);
             }
             catch (Exception e)
             {
                 Log.Error(e?.Message);
                 Log.Error(e?.InnerException?.Message);
+                httpContext.Response.StatusCode = 500;
+                await httpContext.Response.WriteAsync("error occured");
             }
         }
     }

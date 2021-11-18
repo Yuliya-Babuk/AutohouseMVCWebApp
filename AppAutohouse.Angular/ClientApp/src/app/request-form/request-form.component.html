@@ -8,9 +8,9 @@
       transform: translate(-50%, -50%); z-index: 2; width: 50%; padding: 20px; text-align: left; ">
 
 <div class="mb-3" *ngIf="requestErrors.length > 0">
-  <small *ngFor="let error of requestErrors" style="color:whitesmoke;">
-    <h5>{{ error }}</h5>
-  </small>
+  <div *ngFor="let error of requestErrors">
+    <h5 style="color:whitesmoke;">{{ error }}</h5>
+  </div>
 </div>
     <h1 style=" color: white;">
       Request form

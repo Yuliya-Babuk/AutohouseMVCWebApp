@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-
+﻿using MVCAppAutohouse.DAL.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppAutohouse.DAL.Entities
 {
@@ -20,7 +20,9 @@ namespace AppAutohouse.DAL.Entities
         [Required]
         public int? Price { get; set; }
         public byte[] Photo { get; set; }
-
+        [ForeignKey("RequestId")]
+        public int RequestId { get; set; }
+        public Request Request { get; set; }
     }
     public enum EngineType
     {

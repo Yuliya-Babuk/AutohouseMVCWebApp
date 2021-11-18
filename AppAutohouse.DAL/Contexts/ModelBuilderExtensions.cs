@@ -10,7 +10,8 @@ namespace AppAutohouse.DAL.Contexts
         public static void Seed(this ModelBuilder builder)
         {
             builder.Entity<Brand>().HasMany(x => x.Cars).WithOne(x => x.Brand);
-
+            builder.Entity<Car>().HasOne(x => x.Request).WithOne(x => x.Car).HasForeignKey<Request>(t => t.CarId);
+            
             List<Brand> brands = new List<Brand>()
             {
                 new Brand() {Id = 1, Name = "Audi", Description = "Audi is the most prominent car brand for designing the best car interiors, with easy and accessible controls. Its MMI infotainment system is among the best available amongst the other brands. This car brand has the biggest vehicle line ups from being super-mini to being supra huge with the best available diesel and hybrid engines making it prominent for road racing."
@@ -18,7 +19,7 @@ namespace AppAutohouse.DAL.Contexts
                 new Brand() {Id = 2, Name = "BMW", Description = "With a wide range of innovative vehicle model, this car brand is known for its reliability and luxury status. This automobile company has serves its customers with luxurious piloting on the roads, while making sure that comfort has been served, from its passenger vehicles to its SUV, it will always be a great ride."
                 , Logo = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/2048px-BMW.svg.png" },
                 new Brand() {Id = 3, Name = "Volkswagen", Description = "This car brand is attentive enough with it comes to detailing of their model, each model is well detailed with the best technological features as well as well-equipped model design. This car brand is the most stylish and comfortable amongst the other car brands in terms of its design and affordability with a favourable service cost."
-                , Logo = "https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77700241206.jpg" }
+                , Logo = "https://cdn.motor1.com/images/mgl/pqj8V/s3/logo-story-volkswagen.webp" }
             };
             builder.Entity<Brand>().HasData(brands);
         
@@ -35,7 +36,7 @@ namespace AppAutohouse.DAL.Contexts
 
             List<Request> requests = new List<Request>()
         {
-            new Request() { Id = 1, Name = "Yuliya", Surname = "Babuk", PhoneNumber = "+375291199719",
+            new Request() { Id = 1, Name = "Yuliya", Surname = "Babuk", PhoneNumber = "+375(29)119-97-19",
             CarId = 1, RequestState = RequestState.None}
 
         };

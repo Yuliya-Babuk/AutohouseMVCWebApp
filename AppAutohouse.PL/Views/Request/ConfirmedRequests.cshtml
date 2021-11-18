@@ -1,6 +1,6 @@
 ﻿@using AppAutohouse.PL.Models;
 
-@model IEnumerable<RequestModel>
+@model (IEnumerable<RequestModel>, int)
 
 @{
     ViewData["Title"] = "Confirmed requests";
@@ -15,24 +15,32 @@
                 <th>    Name</th>
                 <th>    Surname</th>
                 <th>    Phone number</th>
-                <th>    Car ID</th>
-
+                <th>    Car</th>
+                <th>    Change of state</th>
             </tr>
 
         <thead>
 
-            @foreach (var item in @Model)
+            @foreach (var item in @Model.Item1)
             {
-                <tr>
+                <tr style="vertical-align:middle">
 
                     <td>@item.Name</td>
                     <td>@item.Surname</td>
                     <td>@item.PhoneNumber</td>
-                    <td>@item.CarId</td>
+                    <td><a href="/Car/GetInfoById/@item.CarId">@item.Car.Brand.Name @item.Car.Model, @item.Car.Year</a></td>
+                    <th>
+                        <form action="/Request/DeclineRequest" method="post" style="margin-top:15px">
+                            <input type="hidden" name="Id" value="@item.Id" />
+                            <button type="submit" class="btn btn-primary mb-3">Decline</button>
+                        </form>
+                    </th>
 
                 </tr>
 
             }
     </table>
+    @await Html.PartialAsync("_PagesPartial", new PagesModel() { PagesAmount = Model.Item2, CurrentPage = (int)ViewBag.CurrentPage, Url = "/declined-requests" })
 </div>
+
 

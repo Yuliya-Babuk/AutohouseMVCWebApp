@@ -13,7 +13,7 @@ namespace AppAutohouse.DAL.Context
         public DbSet<Brand> Brands { get; set; } = default!;
         public DbSet<Request> Requests { get; set; } = default!;       
         public AutohouseContext(DbContextOptions<AutohouseContext> options) : base(options)
-        {
+        {                 
           // Database.EnsureDeleted();
           // Database.EnsureCreated();
         }
@@ -25,6 +25,11 @@ namespace AppAutohouse.DAL.Context
             base.OnModelCreating(builder);
             builder.Seed();
         }
-
+       
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            //optionsBuilder.EnableSensitiveDataLogging();
+            //optionsBuilder.LogTo(System.Console.WriteLine);
+        }
     }
 }

@@ -1,34 +1,41 @@
 ﻿using AppAutohouse.BLL;
+using AppAutohouse.BLL.Services;
 using AppAutohouse.DAL.Entities;
 using AppAutohouse.PL.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace AppAutohouse.PL
 {
     [Authorize(Roles = "admin")]
-    public class CatalogController : Controller
+    public class CarController : Controller
 
     {
         private readonly IBrandService _brandService;
         private readonly ICarService _carService;
         private readonly IMapper _mapper;
+        private const int itemsPerPage = 3;
 
 
-        public CatalogController(IBrandService brandService, ICarService carService, IMapper mapper)
+        public CarController(IBrandService brandService, ICarService carService, IMapper mapper)
         {
             _brandService = brandService;
             _carService = carService;
             _mapper = mapper;
         }
-
-        [Route("[controller]")]
-        public IActionResult Cars()
+        
+        [Route("Cars/{pageNumber?}")]
+        public IActionResult Cars(int pageNumber = 1)
         {
-            return View(_carService.GetAll());
+            ViewBag.CurrentPage = pageNumber;
+            var (cars, itemsAmount) = _carService.GetAll(pageNumber, itemsPerPage);
+            (IEnumerable<Car> cars, int pagesAmount) result = (cars, PaginationService.PagesAmountCalculation(itemsAmount, itemsPerPage));
+            return View(result);
             //передаем браузеру
         }
 
@@ -40,8 +47,9 @@ namespace AppAutohouse.PL
             return RedirectToAction("Cars");
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetInfoByIdAsync(int id)
-        {
+        {            
             var car = await _carService.GetByIdAsync(id);
             return View(car);
         }
@@ -81,22 +89,20 @@ namespace AppAutohouse.PL
                     await _carService.AddNewAsync(car);
                 }
                 return RedirectToAction("Cars");
-            }
-            else ModelState.AddModelError("", "Something goes wrong");
+            }            
             return View("UpdateOrCreate", _mapper.Map<Car>(carModel));
         }
 
-        public async Task<IActionResult> UpdateOrCreateAsync(int id)
+        [HttpGet]
+        public async Task<IActionResult> UpdateOrCreateAsync(int Id)
         {
-            var car = await _carService.GetByIdAsync(id);
+            var car = await _carService.GetByIdAsync(Id);
             if (car is not null)
             {
                 return View("UpdateOrCreate", car);
             }
             return View("UpdateOrCreate", new Car());
-        }
-
-     
+        }         
 
     }
 }

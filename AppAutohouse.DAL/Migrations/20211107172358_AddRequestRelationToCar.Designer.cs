@@ -10,18 +10,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppAutohouse.DAL.Migrations
 {
     [DbContext(typeof(AutohouseContext))]
-    [Migration("20210904205100_AddRequest")]
-    partial class AddRequest
+    [Migration("20211107172358_AddRequestRelationToCar")]
+    partial class AddRequestRelationToCar
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.9")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Brand", b =>
+            modelBuilder.Entity("AppAutohouse.DAL.Entities.Brand", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,26 +49,26 @@ namespace AppAutohouse.DAL.Migrations
                         {
                             Id = 1,
                             Description = "Audi is the most prominent car brand for designing the best car interiors, with easy and accessible controls. Its MMI infotainment system is among the best available amongst the other brands. This car brand has the biggest vehicle line ups from being super-mini to being supra huge with the best available diesel and hybrid engines making it prominent for road racing.",
-                            Logo = "/images/car_logo_audi.png",
+                            Logo = "https://cdn.freelogovectors.net/wp-content/uploads/2016/12/audi-logo.png",
                             Name = "Audi"
                         },
                         new
                         {
                             Id = 2,
                             Description = "With a wide range of innovative vehicle model, this car brand is known for its reliability and luxury status. This automobile company has serves its customers with luxurious piloting on the roads, while making sure that comfort has been served, from its passenger vehicles to its SUV, it will always be a great ride.",
-                            Logo = "/images/car_logo_bmw.png",
+                            Logo = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/2048px-BMW.svg.png",
                             Name = "BMW"
                         },
                         new
                         {
                             Id = 3,
                             Description = "This car brand is attentive enough with it comes to detailing of their model, each model is well detailed with the best technological features as well as well-equipped model design. This car brand is the most stylish and comfortable amongst the other car brands in terms of its design and affordability with a favourable service cost.",
-                            Logo = "/images/car_logo_vw.png",
+                            Logo = "https://cdn.motor1.com/images/mgl/pqj8V/s3/logo-story-volkswagen.webp",
                             Name = "Volkswagen"
                         });
                 });
 
-            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Car", b =>
+            modelBuilder.Entity("AppAutohouse.DAL.Entities.Car", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,8 +89,14 @@ namespace AppAutohouse.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Photo")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int?>("Price")
                         .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequestId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Year")
@@ -112,6 +118,7 @@ namespace AppAutohouse.DAL.Migrations
                             EngineType = 0,
                             Model = "A6",
                             Price = 8500,
+                            RequestId = 0,
                             Year = 2008
                         },
                         new
@@ -122,6 +129,7 @@ namespace AppAutohouse.DAL.Migrations
                             EngineType = 1,
                             Model = "A8",
                             Price = 13500,
+                            RequestId = 0,
                             Year = 2010
                         },
                         new
@@ -132,6 +140,7 @@ namespace AppAutohouse.DAL.Migrations
                             EngineType = 1,
                             Model = "X6",
                             Price = 20500,
+                            RequestId = 0,
                             Year = 2020
                         });
                 });
@@ -150,16 +159,32 @@ namespace AppAutohouse.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RequestState")
+                        .HasColumnType("int");
 
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId");
+                    b.HasIndex("CarId")
+                        .IsUnique();
 
                     b.ToTable("Requests");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CarId = 1,
+                            Name = "Yuliya",
+                            PhoneNumber = "+375(29)119-97-19",
+                            RequestState = 0,
+                            Surname = "Babuk"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -358,9 +383,9 @@ namespace AppAutohouse.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Car", b =>
+            modelBuilder.Entity("AppAutohouse.DAL.Entities.Car", b =>
                 {
-                    b.HasOne("MVCAppAutohouse.DAL.Entities.Brand", "Brand")
+                    b.HasOne("AppAutohouse.DAL.Entities.Brand", "Brand")
                         .WithMany("Cars")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -371,9 +396,9 @@ namespace AppAutohouse.DAL.Migrations
 
             modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Request", b =>
                 {
-                    b.HasOne("MVCAppAutohouse.DAL.Entities.Car", "Car")
-                        .WithMany()
-                        .HasForeignKey("CarId")
+                    b.HasOne("AppAutohouse.DAL.Entities.Car", "Car")
+                        .WithOne("Request")
+                        .HasForeignKey("MVCAppAutohouse.DAL.Entities.Request", "CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -431,9 +456,14 @@ namespace AppAutohouse.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Brand", b =>
+            modelBuilder.Entity("AppAutohouse.DAL.Entities.Brand", b =>
                 {
                     b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("AppAutohouse.DAL.Entities.Car", b =>
+                {
+                    b.Navigation("Request");
                 });
 #pragma warning restore 612, 618
         }
