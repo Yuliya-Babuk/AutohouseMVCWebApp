@@ -1,7 +1,10 @@
 ﻿using AppAutohouse.BLL;
+using AppAutohouse.BLL.Services;
 using AppAutohouse.DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AppAutohouse.PL
@@ -10,7 +13,8 @@ namespace AppAutohouse.PL
 
     {
         private readonly IBrandService _brandService;
-        private readonly ICarService _carService;       
+        private readonly ICarService _carService;
+        private const int itemsPerPage = 3;
 
         public BrandController(IBrandService brandService, ICarService carService)
         {
@@ -18,10 +22,14 @@ namespace AppAutohouse.PL
             _brandService = brandService;            
         }
 
-        [Route("brands")]
-        public IActionResult Brands()
+        [Route("brands/{pageNumber?}")]
+        public IActionResult Brands(int pageNumber=1)
         {
-            return View(_brandService.GetAll()); //передаем браузеру
+            ViewBag.CurrentPage = pageNumber;
+            var (brands, itemsAmount) = _brandService.GetAll(pageNumber, itemsPerPage);
+            (IEnumerable<Brand> brands, int pagesAmount) result = (brands, PaginationService.PagesAmountCalculation(itemsAmount, itemsPerPage));
+            return View(result);
+            //передаем браузеру
         }
 
         [Authorize(Roles = "admin")]

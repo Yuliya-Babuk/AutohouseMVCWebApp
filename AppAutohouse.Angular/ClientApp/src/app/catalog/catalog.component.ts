@@ -11,10 +11,14 @@ import { Router } from "@angular/router";
 })
 export class CatalogComponent implements OnInit {
   public cars: Car[];
+
   public name: any;
   public description: any;
   public logo: any;
-  public searchForm: FormGroup;
+  public searchLine: string;
+  public pagesAmount: number;
+  public currentPage: number = 1;
+  public resultSource: ResultSource;
 
   constructor(
     public http: HttpClient,
@@ -22,43 +26,62 @@ export class CatalogComponent implements OnInit {
     public router: Router,
     public sanitizer: DomSanitizer
   ) {
-    http.get<Car[]>(baseUrl + "catalog").subscribe(
-      (result) => {
-        this.cars = result;
-        if (this.cars) {
-          for (let car of this.cars) {
-            car.photo = this.sanitizer.bypassSecurityTrustUrl(
-              "data:image/jpeg;base64," + car.photo
-            );
-          }
-        }
-      },
-      (error) => console.error(error)
-    );
+    this.GetCatalog();
   }
-  ngOnInit() {
-    this.searchForm = new FormGroup({
-      searchInput: new FormControl(),
-    });
-  }
+  ngOnInit() {}
+
   RedirectToForm(id: number) {
     this.router.navigate(["/request-form/" + id]);
   }
 
-  Send() {
-    console.log(this.searchForm.value);
+  KeyUp(isFromSearchLine: boolean = true) {
+    if (isFromSearchLine) this.currentPage = 1;
     this.http
-      .get<Car[]>(this.baseUrl + "catalog/search", {
-        params: { searchLine: this.searchForm.value.searchInput },
+      .get<[Car[], number]>(this.baseUrl + "catalog/search", {
+        params: {
+          searchLine: this.searchLine,
+          pageNumber: this.currentPage.toString(),
+        },
       })
       .subscribe(
         (result) => {
-          this.cars = result;
+          this.resultSource = ResultSource.Search;
+          this.cars = result["item1"];
+          this.pagesAmount = result["item2"];
           if (this.cars) {
             for (let car of this.cars) {
               car.photo = this.sanitizer.bypassSecurityTrustUrl(
                 "data:image/jpeg;base64," + car.photo
               );
+            }
+          }
+        },
+        (error) => console.error(error)
+      );
+  }
+
+  SetCurrentPage(index: number) {
+    this.currentPage = index;
+    if (this.resultSource === ResultSource.Catalog) this.GetCatalog();
+    else this.KeyUp(false);
+  }
+
+  private GetCatalog() {
+    this.http
+      .get<[Car[], number]>(this.baseUrl + "catalog", {
+        params: { pageNumber: this.currentPage.toString() },
+      })
+      .subscribe(
+        (result) => {
+          this.resultSource = ResultSource.Catalog;
+          this.cars = result["item1"];
+          this.pagesAmount = result["item2"];
+          if (this.cars) {
+            for (let car of this.cars) {
+              car.photo = this.sanitizer.bypassSecurityTrustUrl(
+                "data:image/jpeg;base64," + car.photo
+              );
+              car.engineSize.toLocaleString;
             }
           }
         },
@@ -88,4 +111,8 @@ export interface Brand {
   name: string;
   logo: string;
   description: string;
+}
+enum ResultSource {
+  Catalog,
+  Search,
 }

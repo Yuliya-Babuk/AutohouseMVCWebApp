@@ -1,10 +1,18 @@
-<h1 class="display-5 text-center">Autohouse</h1>
-<h1 class="display-4 text-center">"Drive your Dream"</h1>
-
-<div>
-  <div class="row" style="margin-top: 5%; margin-left: 10%">
-    <div class="mb-3">
-      <form
+<div
+  class="bg-image"
+  style="
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlbAqgGEQtwygUK3Q1qnTbq0DR4RpUu_9tgC19Z7hge0AF5S_B3r-_lhDWsmAdwDIhsls&usqp=CAU');
+    height: 100vh;
+    background-size: cover;
+  "
+>
+  <h1 class="display-3 text-center">Autohouse</h1>
+  <h1 class="display-3 text-center">"Drive your Dream"</h1>
+  <div class="container">
+    <div>
+      <div class="row" style="margin-top: 3%; margin-left: 10%">
+        <div class="mb-3">
+          <!-- <form
         class="d-flex"
         [formGroup]="searchForm"
         (ngSubmit)="Send()"
@@ -18,98 +26,154 @@
           aria-label="Search"
         />
         <button type="submit" class="btn btn-primary mb-3">Search</button>
-      </form>
-    </div>
+      </form> -->
 
-    <div class="col-11">
-      <div
-        class="card mb-4"
-        style="max-width: 900px; height: 160px"
-        *ngFor="let car of cars"
-      >
-        <div class="row g-1">
-          <div class="col-md-3">
-            <img
-              [src]="car.photo"
-              class="image-fluid rounded-start"
-              style="width: 110%; height: 90%"
-              alt="..."
-            />
-          </div>
+          <input
+            [(ngModel)]="searchLine"
+            (keyup)="KeyUp()"
+            class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            style="max-width: 900px; background-color: #fafaf9bb"
+          />
+        </div>
 
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">
-                <a
-                  (click)="
-                    PassDataToModal(
-                      car.brand.logo,
-                      car.brand.description,
-                      car.brand.name
-                    )
-                  "
-                  href=""
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"
-                  style="text-decoration-line: underline"
-                  >{{ car.brand.name }}</a
-                >
-                {{ car.model }}
-              </h5>
+        <div class="col-11">
+          <div
+            class="card mb-4"
+            style="max-width: 900px; height: 160px; background-color: #fafaf9bb"
+            *ngFor="let car of cars"
+          >
+            <div class="row g-1">
+              <div class="col-md-3">
+                <img
+                  [src]="car.photo"
+                  class="image-fluid rounded-start"
+                  style="width: 110%; height: 90%"
+                  alt="..."
+                />
+              </div>
 
-              <p class="card-text">
-                {{ car.engineType }}, {{ car.engineSize }}L, {{ car.year }}
-              </p>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a
+                      (click)="
+                        PassDataToModal(
+                          car.brand.logo,
+                          car.brand.description,
+                          car.brand.name
+                        )
+                      "
+                      href=""
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      style="text-decoration-line: underline"
+                      >{{ car.brand.name }}</a
+                    >
+                    {{ car.model }}
+                  </h5>
 
-              <div class="card-text d-flex justify-content-between">
-                <small class="text-muted"> {{ car.price }} $</small>
+                  <p class="card-text">
+                    {{ car.engineType }},
+                    {{
+                      car.engineSize.toLocaleString("en-us", {
+                        minimumFractionDigits: 1
+                      })
+                    }}L, {{ car.year }}
+                  </p>
 
-                <button
-                  type="button"
-                  (click)="RedirectToForm(car.id)"
-                  class="btn btn-outline-primary"
-                >
-                  Create request
-                </button>
+                  <div class="card-text d-flex justify-content-between">
+                    <small class="text-muted"> {{ car.price }} $</small>
+
+                    <button
+                      type="button"
+                      (click)="RedirectToForm(car.id)"
+                      class="btn btn-outline-primary"
+                    >
+                      Create request
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <nav *ngIf="pagesAmount > 1" aria-label="..." style="margin-left: 68%">
+          <ul class="pagination">
+            <li
+              class="page-item"
+              [ngClass]="currentPage === 1 ? 'page-item disabled' : 'page-item'"
+            >
+              <a
+                class="page-link"
+                style="background-color: #fafaf9bb"
+                (click)="SetCurrentPage(currentPage - 1)"
+                tabindex="-1"
+                aria-disabled="true"
+                >Previous</a
+              >
+            </li>
+
+            <li
+              [ngClass]="
+                currentPage === i + 1 ? 'page-item active' : 'page-item'
+              "
+              *ngFor="let page of [].constructor(pagesAmount); let i = index"
+            >
+              <a class="page-link" (click)="SetCurrentPage(i + 1)">{{
+                i + 1
+              }}</a>
+            </li>
+
+            <li
+              class="page-item"
+              [ngClass]="
+                currentPage === pagesAmount ? 'page-item disabled' : 'page-item'
+              "
+            >
+              <a class="page-link" (click)="SetCurrentPage(currentPage + 1)"
+                >Next</a
+              >
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
-</div>
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{ name }}</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="container show-grid">
-          <div class="row">
-            <div class="col-4">
-              <img
-                src="{{ logo }}"
-                class="image-fluid rounded-start"
-                style="width: 110%; height: 90%"
-                alt="..."
-              />
-            </div>
-            <div class="col-8">
-              {{ description }}
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{ name }}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="container show-grid">
+            <div class="row">
+              <div class="col-4">
+                <img
+                  src="{{ logo }}"
+                  class="image-fluid rounded-start"
+                  style="width: 100%; height: 80%"
+                  alt="..."
+                />
+              </div>
+              <div class="col-8">
+                {{ description }}
+              </div>
             </div>
           </div>
         </div>

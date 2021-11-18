@@ -1,6 +1,7 @@
 ﻿using AppAutohouse.DAL.Entities;
 using AppAutohouse.PL.Mappers;
 using Microsoft.AspNetCore.Http;
+using MVCAppAutohouse.DAL.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace AppAutohouse.PL.Models
@@ -21,5 +22,7 @@ namespace AppAutohouse.PL.Models
         [Required]
         public int? Price { get; set; }
         public IFormFile Photo { get; set; }
+        public int? RequestId { get; set; }
+        public Request Request { get; set; }
     }    
 }
