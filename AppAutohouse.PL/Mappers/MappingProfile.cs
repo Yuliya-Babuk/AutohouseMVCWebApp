@@ -16,6 +16,7 @@ namespace AppAutohouse.PL.Mappers
             CreateMap<Car, CarModel>().ReverseMap().ForMember(x=>x.Photo,opt=>opt.Ignore());
             CreateMap<Brand, BrandModel>().ReverseMap();
             CreateMap<Request, RequestModel>().ReverseMap();
+            CreateMap<(IEnumerable<Request>,int), (IEnumerable<RequestModel>, int)>().ReverseMap();
         }
     }
 }

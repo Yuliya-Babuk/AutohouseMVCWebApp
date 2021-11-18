@@ -11,7 +11,7 @@ namespace AppAutohouse.DAL.Repositories
     public abstract class AbstractRepository<T> where T : class
     {
         private readonly DbContext _context;
-        private DbSet<T> table;
+        protected DbSet<T> table;
 
         public AbstractRepository(DbContext context)
         {
@@ -39,33 +39,39 @@ namespace AppAutohouse.DAL.Repositories
             }
         }
 
-        public IEnumerable<T> GetAll(
+        public (IEnumerable<T> items,int itemsAmount) GetAll(
             Func<T, bool> predicate = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
-            bool IsTracking = true)
+            bool IsTracking = true,
+            int takeAmount = 3,
+            int skipAmount = 0)
         {
+            int itemsAmount;
             if (predicate != null)
             {
+
                 if (include != null)
                 {
+                    itemsAmount = include(table).Count(predicate);
                     return IsTracking
-                        ? include(table).Where(predicate)
-                        : include(table).AsNoTracking().Where(predicate);
+                        ? (include(table).Where(predicate).Skip(skipAmount).Take(takeAmount), itemsAmount)
+                        : (include(table).AsNoTracking().Where(predicate).Skip(skipAmount).Take(takeAmount), itemsAmount);
                 }
-
+                itemsAmount = table.Count(predicate);
                 return IsTracking
-                ? table.Where(predicate)
-                : table.AsNoTracking().Where(predicate);
+                ? (table.Where(predicate).Skip(skipAmount).Take(takeAmount),itemsAmount)
+                : (table.AsNoTracking().Where(predicate).Skip(skipAmount).Take(takeAmount),itemsAmount);
             }
+            itemsAmount = table.Count();
             if (include != null)
             {
                 return IsTracking
-                    ? (include(table))
-                    : (include(table).AsNoTracking());
+                    ? (include(table).Skip(skipAmount).Take(takeAmount),itemsAmount)
+                    : (include(table).AsNoTracking().Skip(skipAmount).Take(takeAmount),itemsAmount);
             }
             return IsTracking
-                   ? table
-                   : table.AsNoTracking();
+                   ? (table.Skip(skipAmount).Take(takeAmount),itemsAmount)
+                   : (table.AsNoTracking().Skip(skipAmount).Take(takeAmount),itemsAmount);
         }
 
         //TODO: refactor code

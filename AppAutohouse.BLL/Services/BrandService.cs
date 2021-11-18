@@ -1,9 +1,7 @@
-﻿using AppAutohouse.DAL.Repositories;
-
+﻿using AppAutohouse.DAL.Entities;
+using MVCAppAutohouse.DAL.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MVCAppAutohouse.DAL.Repositories;
-using AppAutohouse.DAL.Entities;
 
 namespace AppAutohouse.BLL
 {
@@ -19,29 +17,27 @@ namespace AppAutohouse.BLL
 
         public async Task AddNewAsync(Brand item)
         {
-           await _brandRepository.AddNewAsync(item);
+            await _brandRepository.AddNewAsync(item);
         }
 
         public async Task DeleteAsync(int id)
         {
-          await  _brandRepository.DeleteAsync(id);
+            await _brandRepository.DeleteAsync(id);
         }
-        public IEnumerable<Brand> GetAll()
+        public (IEnumerable<Brand>, int) GetAll(int pageNumber, int takeAmount)
         {
-            return _brandRepository.GetAll();
+            int skipAmount = (pageNumber - 1) * takeAmount;
+            return _brandRepository.GetAll(skipAmount: skipAmount, takeAmount: takeAmount, IsTracking: false);
         }
         public async Task<Brand> GetByIdAsync(int id)
         {
-            return await _brandRepository.GetByPredicateAsync( x=> x.Id == id, IsTracking: false);
+            return await _brandRepository.GetByPredicateAsync(x => x.Id == id, IsTracking: false);
         }
 
         public async Task UpdateAsync(Brand item)
         {
-                    
-           
-                await _brandRepository.UpdateAsync(item);
-            
-           
+            await _brandRepository.UpdateAsync(item);
+
         }
     }
 }

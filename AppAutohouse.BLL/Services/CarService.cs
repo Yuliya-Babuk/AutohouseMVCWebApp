@@ -1,11 +1,7 @@
 ﻿using AppAutohouse.DAL.Entities;
-using AppAutohouse.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using MVCAppAutohouse.DAL.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppAutohouse.BLL
@@ -28,51 +24,39 @@ namespace AppAutohouse.BLL
         }
         public async Task DeleteAsync(int id)
         {
-           await _carRepository.DeleteAsync(id);
+            await _carRepository.DeleteAsync(id);
         }
-        public IEnumerable<Car> GetAll()
+        public (IEnumerable<Car>, int) GetAll(int pageNumber, int takeAmount)
         {
-            return _carRepository.GetAll(include:x=>x.Include(x=>x.Brand));
+            int skipAmount = (pageNumber - 1) * takeAmount;
+            return _carRepository.GetAll(include: x => x.Include(x => x.Brand), IsTracking: false, takeAmount: takeAmount, skipAmount: skipAmount);
         }
 
-        public IEnumerable<Car> GetAllByBrandId(int id)
+        public (IEnumerable<Car> cars, int itemsAmount) GetAllByBrandId(int id)
         {
-            return _carRepository.GetAll(predicate:x=>x.BrandId ==id, include: x => x.Include(x => x.Brand),IsTracking: false);;
+            return _carRepository.GetAll(predicate: x => x.BrandId == id, include: x => x.Include(x => x.Brand), IsTracking: false); ;
+        }
+        public (IEnumerable<Car>, int) GetAllForSale(int pageNumber, int takeAmount)
+        {
+            int skipAmount = (pageNumber - 1) * takeAmount;
+            return _carRepository.GetAll(predicate: x => x.Request == null, include: x => x.Include(x => x.Brand).Include(x => x.Request), IsTracking: false, takeAmount: takeAmount, skipAmount: skipAmount);
         }
 
         public async Task<Car> GetByIdAsync(int id)
         {
-            return  await _carRepository.GetByPredicateAsync(include:x=>x.Include(x=>x.Brand),predicate:x=>x.Id == id,IsTracking:false);
+            return await _carRepository.GetByPredicateAsync(include: x => x.Include(x => x.Brand), predicate: x => x.Id == id, IsTracking: false);
         }
 
 
-        public IEnumerable<Car> SearchAsync(string searchLine)
+        public async Task<(IEnumerable<Car> cars, int itemsAmount)> SearchAsync(string searchLine, int pageNumber, int takeAmount)
         {
-            if(string.IsNullOrEmpty(searchLine))
-                return _carRepository.GetAll(include: x => x.Include(x => x.Brand), IsTracking: false);
+            return await _carRepository.SearchAsync(searchLine, pageNumber, takeAmount);
 
-
-            var splitedSearchLine = searchLine.Split(" ");
-            List<Car> result = new List<Car>();
-            foreach (string partionLine in splitedSearchLine)
-            {
-                result.AddRange(_carRepository.GetAll(
-                predicate: x => (x.Brand.Name.Contains(partionLine, StringComparison.OrdinalIgnoreCase))
-                || (x.Model.Contains(partionLine, StringComparison.OrdinalIgnoreCase))
-                || (x.EngineSize.ToString().Contains(partionLine, StringComparison.OrdinalIgnoreCase))
-            , include: x => x.Include(x => x.Brand), IsTracking: false));
-
-            }
-            var uniqueResult= result
-                .GroupBy(x => x.Id)
-                  .Select(x => x.First());
-            return uniqueResult;
-
-        }      
+        }
 
         public async Task UpdateAsync(Car item)
         {
-          await  _carRepository.UpdateAsync(item);
+            await _carRepository.UpdateAsync(item);
         }
     }
 

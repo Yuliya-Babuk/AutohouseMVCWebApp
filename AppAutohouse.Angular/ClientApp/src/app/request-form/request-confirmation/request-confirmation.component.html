@@ -1,0 +1,33 @@
+<div
+  class="bg-image"
+  style="
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlbAqgGEQtwygUK3Q1qnTbq0DR4RpUu_9tgC19Z7hge0AF5S_B3r-_lhDWsmAdwDIhsls&usqp=CAU');
+    height: 100vh;
+    background-size: cover;
+  "
+>
+  <div class="h-150 row align-items-center">
+    <div id="page-header-info" class="col text-left">
+      <h2>Thank you, {{ name }}</h2>
+      <p class="fs-5" style="margin-top: 50px">
+        We have received your request and will get back to you soon.
+      </p>
+      <p class="fs-5">
+        If you are not contacted during 1 hour, please, write an email on
+        <a
+          href="mailto:info.deutschland@eveoncontainers.com"
+          class="page-hero__item-link"
+          >operations@DYD.com</a
+        >.
+      </p>
+      <button
+        type="button"
+        class="btn btn-warning btn-lg"
+        style="margin-top: 20px; width: 70px"
+        [routerLink]="['/catalog']"
+      >
+        OK
+      </button>
+    </div>
+  </div>
+</div>

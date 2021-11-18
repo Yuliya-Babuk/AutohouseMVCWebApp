@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppAutohouse.Angular", "AppAutohouse.Angular\AppAutohouse.Angular.csproj", "{C024E329-82CC-4499-AC28-5D7E22B40581}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAutohouse.BLL.Test", "AppAutohouse.Test\AppAutohouse.BLL.Test.csproj", "{903599DA-0FFB-4777-AEEF-AB392CC2E1EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{C024E329-82CC-4499-AC28-5D7E22B40581}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C024E329-82CC-4499-AC28-5D7E22B40581}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C024E329-82CC-4499-AC28-5D7E22B40581}.Release|Any CPU.Build.0 = Release|Any CPU
+		{903599DA-0FFB-4777-AEEF-AB392CC2E1EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{903599DA-0FFB-4777-AEEF-AB392CC2E1EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{903599DA-0FFB-4777-AEEF-AB392CC2E1EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{903599DA-0FFB-4777-AEEF-AB392CC2E1EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
