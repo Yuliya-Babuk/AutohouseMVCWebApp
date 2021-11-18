@@ -18,13 +18,14 @@ namespace AppAutohouse.PL
         public async Task InvokeAsync(HttpContext httpContext)
         {
             try
-            {
+            {               
                 await _next(httpContext);
             }
             catch (Exception e)
             {
                 Log.Error(e?.Message);
-                Log.Error(e?.InnerException?.Message);
+                Log.Error(e?.InnerException?.Message);               
+                await httpContext.Response.WriteAsync("error occured");
             }
         }
     }

@@ -61,7 +61,7 @@ namespace AppAutohouse.DAL.Migrations
                         {
                             Id = 3,
                             Description = "This car brand is attentive enough with it comes to detailing of their model, each model is well detailed with the best technological features as well as well-equipped model design. This car brand is the most stylish and comfortable amongst the other car brands in terms of its design and affordability with a favourable service cost.",
-                            Logo = "https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77700241206.jpg",
+                            Logo = "https://cdn.motor1.com/images/mgl/pqj8V/s3/logo-story-volkswagen.webp",
                             Name = "Volkswagen"
                         });
                 });
@@ -94,6 +94,9 @@ namespace AppAutohouse.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<int>("RequestId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Year")
                         .IsRequired()
                         .HasColumnType("int");
@@ -113,6 +116,7 @@ namespace AppAutohouse.DAL.Migrations
                             EngineType = 0,
                             Model = "A6",
                             Price = 8500,
+                            RequestId = 0,
                             Year = 2008
                         },
                         new
@@ -123,6 +127,7 @@ namespace AppAutohouse.DAL.Migrations
                             EngineType = 1,
                             Model = "A8",
                             Price = 13500,
+                            RequestId = 0,
                             Year = 2010
                         },
                         new
@@ -133,6 +138,7 @@ namespace AppAutohouse.DAL.Migrations
                             EngineType = 1,
                             Model = "X6",
                             Price = 20500,
+                            RequestId = 0,
                             Year = 2020
                         });
                 });
@@ -162,7 +168,8 @@ namespace AppAutohouse.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId");
+                    b.HasIndex("CarId")
+                        .IsUnique();
 
                     b.ToTable("Requests");
 
@@ -172,7 +179,7 @@ namespace AppAutohouse.DAL.Migrations
                             Id = 1,
                             CarId = 1,
                             Name = "Yuliya",
-                            PhoneNumber = "+375291199719",
+                            PhoneNumber = "+375(29)119-97-19",
                             RequestState = 0,
                             Surname = "Babuk"
                         });
@@ -388,8 +395,8 @@ namespace AppAutohouse.DAL.Migrations
             modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Request", b =>
                 {
                     b.HasOne("AppAutohouse.DAL.Entities.Car", "Car")
-                        .WithMany()
-                        .HasForeignKey("CarId")
+                        .WithOne("Request")
+                        .HasForeignKey("MVCAppAutohouse.DAL.Entities.Request", "CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -450,6 +457,11 @@ namespace AppAutohouse.DAL.Migrations
             modelBuilder.Entity("AppAutohouse.DAL.Entities.Brand", b =>
                 {
                     b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("AppAutohouse.DAL.Entities.Car", b =>
+                {
+                    b.Navigation("Request");
                 });
 #pragma warning restore 612, 618
         }

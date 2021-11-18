@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Catalog\AddCar.cshtml" />
+    <Content Remove="Views\Car\AddCar.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppAutohouse.DAL.Migrations
 {
     [DbContext(typeof(AutohouseContext))]
-    [Migration("20211010191609_AddPhotoToCar")]
-    partial class AddPhotoToCar
+    [Migration("20211106001711_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace AppAutohouse.DAL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Brand", b =>
+            modelBuilder.Entity("AppAutohouse.DAL.Entities.Brand", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,12 +63,12 @@ namespace AppAutohouse.DAL.Migrations
                         {
                             Id = 3,
                             Description = "This car brand is attentive enough with it comes to detailing of their model, each model is well detailed with the best technological features as well as well-equipped model design. This car brand is the most stylish and comfortable amongst the other car brands in terms of its design and affordability with a favourable service cost.",
-                            Logo = "https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77700241206.jpg",
+                            Logo = "https://cdn.motor1.com/images/mgl/pqj8V/s3/logo-story-volkswagen.webp",
                             Name = "Volkswagen"
                         });
                 });
 
-            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Car", b =>
+            modelBuilder.Entity("AppAutohouse.DAL.Entities.Car", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -153,6 +153,7 @@ namespace AppAutohouse.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RequestState")
@@ -173,7 +174,7 @@ namespace AppAutohouse.DAL.Migrations
                             Id = 1,
                             CarId = 1,
                             Name = "Yuliya",
-                            PhoneNumber = "111",
+                            PhoneNumber = "+375(29)119-97-19",
                             RequestState = 0,
                             Surname = "Babuk"
                         });
@@ -375,9 +376,9 @@ namespace AppAutohouse.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Car", b =>
+            modelBuilder.Entity("AppAutohouse.DAL.Entities.Car", b =>
                 {
-                    b.HasOne("MVCAppAutohouse.DAL.Entities.Brand", "Brand")
+                    b.HasOne("AppAutohouse.DAL.Entities.Brand", "Brand")
                         .WithMany("Cars")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -388,7 +389,7 @@ namespace AppAutohouse.DAL.Migrations
 
             modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Request", b =>
                 {
-                    b.HasOne("MVCAppAutohouse.DAL.Entities.Car", "Car")
+                    b.HasOne("AppAutohouse.DAL.Entities.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -448,7 +449,7 @@ namespace AppAutohouse.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MVCAppAutohouse.DAL.Entities.Brand", b =>
+            modelBuilder.Entity("AppAutohouse.DAL.Entities.Brand", b =>
                 {
                     b.Navigation("Cars");
                 });

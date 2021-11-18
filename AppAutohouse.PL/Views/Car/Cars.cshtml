@@ -1,6 +1,7 @@
 ﻿@using AppAutohouse.DAL.Entities;
+@using AppAutohouse.PL.Models;
 
-@model IEnumerable<Car>
+@model (IEnumerable<Car>, int)
 
 @{
     ViewData["Title"] = "Car catalog";
@@ -8,10 +9,8 @@
 }
 <div class="container">
     <div class="mb-3">
-        <form action="/catalog/UpdateOrCreate" method="get">
-            <input type="hidden" value="0">
-            <button type="submit" class="btn btn-primary">Add new car</button>
-        </form>
+        <a class="btn btn-primary" href="/car/UpdateOrCreate">Add new car</a>
+
     </div>
 
     <div class="mb-3">
@@ -21,46 +20,45 @@
     <table class="table table-striped table-success table-bordered table-hover">
         <thead>
 
-            <tr class="table-warning">
+            <tr class="table-warning" style="text-align:center">
                 <th class="col-1">    Brand</th>
                 <th class="col-1">    Model</th>
                 <th class="col-1">    Engine Type</th>
                 <th class="col-1">    Engine Size, L</th>
                 <th class="col-1">    Year</th>
-                
-                <th class="col-2"></th>
+                <th class="col-2">    Controls</th>
             </tr>
 
         <thead>
 
-            @foreach (var item in @Model)
+            @foreach (var item in @Model.Item1)
             {
-                <tr>
+                <tr style="text-align:center; vertical-align:middle; height:20px">
 
                     <td>@item.Brand.Name</td>
                     <td>@item.Model</td>
                     <td>@item.EngineType</td>
-                    <td>@item.EngineSize</td>
+                    <td>@String.Format("{0:.0}", item.EngineSize)</td>
                     <th>@item.Year</th>
 
                     <td>
-                        <ul class="nav nav-pills px-3">
+                        <ul class="nav nav-pills px-4" style="margin-left:37px; margin-top:10px">
 
                             <li class="nav-item px-2">
-                                <form action="/Catalog/GetInfoById" method="get">
+                                <form action="/Car/GetInfoById" method="get">
                                     <input type="hidden" name="Id" value="@item.Id" />
                                     <button type="submit" class="btn btn-primary mb-3">Info</button>
                                 </form>
                             </li>
                             <li class="nav-item px-2">
-                                <form action="/Catalog/UpdateOrCreate" method="get">
+                                <form action="/Car/UpdateOrCreate" method="get">
                                     <input type="hidden" name="Id" value="@item.Id" />
                                     <button type="submit" class="btn btn-primary mb-3">Update</button>
                                 </form>
                             </li>
                             <li class="nav-item px-2">
 
-                                <form action="/Catalog/DeleteCar" method="post">
+                                <form action="/Car/DeleteCar" method="post">
                                     <input type="hidden" name="Id" value="@item.Id" />
                                     <button type="submit" class="btn btn-primary mb-3">Delete</button>
                                 </form>
@@ -68,8 +66,9 @@
                         </ul>
                     </td>
                 </tr>
-
             }
     </table>
+    @await Html.PartialAsync("_PagesPartial", new PagesModel() { PagesAmount = Model.Item2, CurrentPage = (int)ViewBag.CurrentPage, Url = "/cars" })
 </div>
+
 

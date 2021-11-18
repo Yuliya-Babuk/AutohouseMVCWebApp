@@ -26,10 +26,8 @@ namespace API.Controllers
             catch (Exception e)
             {
                 Log.Error(e?.Message);
-                Log.Error(e?.InnerException?.Message);
-                ModelState.AddModelError("key", "Something goes wrong");
+                Log.Error(e?.InnerException?.Message);                
                 return BadRequest();
-
             }
         }
     }

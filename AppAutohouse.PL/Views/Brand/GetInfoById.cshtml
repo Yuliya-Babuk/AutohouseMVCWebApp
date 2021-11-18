@@ -1,6 +1,6 @@
 ﻿@using AppAutohouse.DAL.Entities;
 
-@model IEnumerable<Car>
+@model (IEnumerable<Car>,int)
 
 @{
     ViewData["Title"] = "Car info";    
@@ -20,7 +20,7 @@
         </thead>
 
 
-        @foreach (var item in @Model)
+        @foreach (var item in @Model.Item1)
         {
             <tr>
 
