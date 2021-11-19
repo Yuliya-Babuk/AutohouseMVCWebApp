@@ -1,7 +1,0 @@
-Manager sees all requests, confirm/decline request, field comments
-Create a table bought cars(confirmed requests)
-Add SoftDelete in Cars
-update .net c#
-change field Logo in Brand update view
-fix validation message for Car, split EngineSize
-check API project 
